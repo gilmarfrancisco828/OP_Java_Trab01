@@ -30,6 +30,13 @@ public class Corrida {
         this.cidade = cidade;
     }
 
+    public Clima getClima(){
+        if(this.calculaChuva()){
+            return Clima.CHUVA;
+        }
+        return Clima.ENSOLARADO;
+    }
+    
     public float getDistancia_pista() {
         return distancia_pista;
     }
@@ -90,7 +97,9 @@ public class Corrida {
        return true;
    }
    
-    public ArrayList<Carro> verificaColisao(Clima clima, ArrayList<Carro>carros){       
+    public ArrayList<Carro> verificaColisao(Clima clima, ArrayList<Equipe> equipe){       
+        ArrayList<Carro> carros = null;
+        for(Equipe e : equipe)carros.add(e.getCarro());
         Carro.ComparadorCarro cc = null;
         cc = new Carro.ComparadorCarro();
         carros.sort(cc);
@@ -117,7 +126,7 @@ public class Corrida {
     private boolean ocorreuAcidente(Clima clima, float prob){
         Random r = new Random();
         float value = r.nextInt(101)*.01f;
-//        System.out.println(value);
+
         if(clima == Clima.CHUVA){
             if(value < prob+.22)
                 return true;

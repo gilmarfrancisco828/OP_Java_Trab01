@@ -10,8 +10,6 @@ public class Carro  {
     
     
     static class ComparadorCarro implements Comparator<Carro>{
-
-        
         
         @Override
         public  int compare(Carro c1, Carro c2) {
@@ -19,12 +17,8 @@ public class Carro  {
             Float d2 = c2.getDistancia();
             
             return d1.compareTo(d1);
-        }
-        
-        
+        }        
     }   
-    
-    
     
     
     private int id;
@@ -146,6 +140,7 @@ public class Carro  {
     
     private double calculaQuantosKmPodeCorrer(){
         return (this.combustivel * 156) * .01;
+//        156km --> desempenho do carro com um taque de 120L
     }
     
     

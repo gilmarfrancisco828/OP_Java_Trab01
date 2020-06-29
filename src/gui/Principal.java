@@ -184,6 +184,17 @@ public class Principal extends javax.swing.JFrame {
                 //Representa cada instante da corrida
                 for (Equipe e : p.c.getEquipes()) {
                     Carro carro = e.getCarro();
+                    if(carro.getEstado() == Carro.Estados.TROCANDO_PNEU){
+                        //decrementa o tempo de espera
+                        //se tempoEsperaTrocaPenu == 0
+                            //carro.setEstado(Carro.Estados.TROCANDO_PNEU);
+                    }
+                    if(carro.getEstado() == Carro.Estados.ABASTECENDO){
+                        //decrementa o tempo de espera
+                        //se tempoEsperaAbastece == 0
+                            //carro.setEstado(Carro.Estados.ABASTECENDO);
+                    }
+                    
                     if(carro.getEstado() != Carro.Estados.CORRIDA_FINALIZADA){
                         corrida_terminou = false;
                         carro.setEstado(Carro.Estados.CORRENDO);
@@ -197,7 +208,27 @@ public class Principal extends javax.swing.JFrame {
                         }
                         carro.mover();
                         carro.decrementaCombustivel();
+                        if (carro.calculaAbastecer(distancia_pista, corrida.getNumero_voltas())){
+                            //abastece o carro
+                            //carro.setEstado(Carro.Estados.ABASTECENDO);
+                        }
+                        if(corrida.calculaChuva()){
+                            //atualiza interface para Chuvoso
+                            //atualiza estatisticas de corrida
+                            //atualiza velocidade dos carros
+                            //troca pneu
+                        }
+                        ArrayList<Carro> acidentados = corrida.verificaColisao(
+                                corrida.getClima(), p.c.getEquipes()
+                        );
+                        
+                        for(Carro c:acidentados){
+                            c.setEstado(Carro.Estados.QUEBRADO);
+                        }
+                        
                         //VERIFICAR PNEU FUROU
+                        // boolean furouPneu() --> metodoIntermedarioCalculaProbabilidadeFurar()
+                        //se furou irParaBox(tempoEspera) --> deixa o carro parado por um tempo, alterando seu estado
                         //VERIFICAR TROCAR PNEU
                     }
                 }
@@ -210,6 +241,7 @@ public class Principal extends javax.swing.JFrame {
                 // Atualiza a tabela na tela-
                 Controlador_TelaCorrida.atualizarTelaCorrida(p.jTable1, p.c);
             }
+//            TODO: Exibir tela de pontuação da corida
 //            TimeUnit.SECONDS.sleep(8 + Delays.TROCA_CORRIDA.getV());
 
             //Corrida terminou, voltar todos os carros pro estado de esperando largada
