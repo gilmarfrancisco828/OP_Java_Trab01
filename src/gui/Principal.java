@@ -48,7 +48,7 @@ public class Principal extends javax.swing.JFrame {
     }
 
     public enum Delays {
-        TROCA_CORRIDA(3), TEMPO_CORRER(100);
+        TROCA_CORRIDA(3), TEMPO_CORRER(100), TEMPO_ABASTECER(1000), TEMPO_TROCAR_PNEU(500);
         public final long v;
 
         private Delays(long v) {
@@ -185,14 +185,19 @@ public class Principal extends javax.swing.JFrame {
                 for (Equipe e : p.c.getEquipes()) {
                     Carro carro = e.getCarro();
                     if(carro.getEstado() == Carro.Estados.TROCANDO_PNEU){
-                        //decrementa o tempo de espera
-                        //se tempoEsperaTrocaPenu == 0
+                        carro.decrementaTempoParado((int)Delays.TEMPO_CORRER.getV()); //decrementa o tempo de espera
+                        if(carro.getTempoParado() <= 0){
+                            carro.setEstado(Carro.Estados.CORRENDO);
+                            carro.setTempoParado(0);
+                        }
                             //carro.setEstado(Carro.Estados.TROCANDO_PNEU);
                     }
                     if(carro.getEstado() == Carro.Estados.ABASTECENDO){
-                        //decrementa o tempo de espera
-                        //se tempoEsperaAbastece == 0
-                            //carro.setEstado(Carro.Estados.ABASTECENDO);
+                        carro.decrementaTempoParado((int)Delays.TEMPO_CORRER.getV());//decrementa o tempo de espera
+                        if(carro.getTempoParado() <= 0){
+                            carro.setEstado(Carro.Estados.CORRENDO);
+                            carro.setTempoParado(0);
+                        }
                     }
                     
                     if(carro.getEstado() != Carro.Estados.CORRIDA_FINALIZADA){
@@ -209,14 +214,9 @@ public class Principal extends javax.swing.JFrame {
                         carro.mover();
                         carro.decrementaCombustivel();
                         if (carro.calculaAbastecer(distancia_pista, corrida.getNumero_voltas())){
-                            //abastece o carro
-                            //carro.setEstado(Carro.Estados.ABASTECENDO);
-                        }
-                        if(corrida.calculaChuva()){
-                            //atualiza interface para Chuvoso
-                            //atualiza estatisticas de corrida
-                            //atualiza velocidade dos carros
-                            //troca pneu
+                            carro.abasteceCarro(); //abastece o carro
+                            carro.setEstado(Carro.Estados.ABASTECENDO); //carro.setEstado(Carro.Estados.ABASTECENDO);
+                            carro.setTempoParado((int)Delays.TEMPO_ABASTECER.getV());
                         }
                         ArrayList<Carro> acidentados = corrida.verificaColisao(
                                 corrida.getClima(), p.c.getEquipes()
@@ -226,10 +226,41 @@ public class Principal extends javax.swing.JFrame {
                             c.setEstado(Carro.Estados.QUEBRADO);
                         }
                         
+                        if(carro.furaPneu(0.1f)){
+                            carro.setEstado(Carro.Estados.PNEU_FURADO);
+                            carro.setTempoParado((int)Delays.TEMPO_TROCAR_PNEU.getV());
+                        }
                         //VERIFICAR PNEU FUROU
                         // boolean furouPneu() --> metodoIntermedarioCalculaProbabilidadeFurar()
                         //se furou irParaBox(tempoEspera) --> deixa o carro parado por um tempo, alterando seu estado
                         //VERIFICAR TROCAR PNEU
+                    }
+                }
+                
+                if(corrida.calculaChuva()){                   
+                    if(corrida.ensolarado()){
+                       this.alteraJLabel2("Chuvoso"); //atualiza interface para Chuvoso
+                       corrida.setClimaChuva();
+                        for(Equipe e2: p.c.getEquipes()){
+                            Carro carro2 = e2.getCarro();
+                            carro2.setDesempenho(0.8f);
+                        } 
+                    }
+                    
+                    
+                            //atualiza estatisticas de corrida
+                            //atualiza velocidade dos carros
+                            //troca pneu
+                }  
+                else{
+                    
+                    if(corrida.chovendo()){
+                        this.chamaAlteraJLabel2("Ensolarado");
+                        corrida.setClimaSol();
+                        for(Equipe e2: p.c.getEquipes()){
+                            Carro carro2 = e2.getCarro();
+                            carro2.setDesempenho(1.0f);
+                        }
                     }
                 }
                 
@@ -252,6 +283,14 @@ public class Principal extends javax.swing.JFrame {
             }
             TimeUnit.SECONDS.sleep(20);
         }
+    }
+    
+    private void alteraJLabel2(String str){
+        this.jLabel2.setText("Tempo: " + str);
+    }
+    
+    private void chamaAlteraJLabel2(String str){
+        this.alteraJLabel2("kaskdka");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

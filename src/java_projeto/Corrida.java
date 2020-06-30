@@ -20,6 +20,7 @@ public class Corrida {
     private int numero_voltas;
     private int dificuldade_pista;
     private float probabilidade_chuva;
+    private Clima clima;
     private String cidade;
 
     public Corrida(float distancia_pista, int numero_voltas, int dificuldade_pista, float probabilidade_chuva, String cidade) {
@@ -28,13 +29,37 @@ public class Corrida {
         this.dificuldade_pista = dificuldade_pista;
         this.probabilidade_chuva = probabilidade_chuva; 
         this.cidade = cidade;
+        this.clima = Clima.ENSOLARADO;
     }
 
     public Clima getClima(){
-        if(this.calculaChuva()){
-            return Clima.CHUVA;
+        return clima;
+    }
+    
+    public boolean chovendo(){
+        if(clima == Clima.CHUVA){
+            return true;
         }
-        return Clima.ENSOLARADO;
+        else{
+            return false;
+        }
+    }
+    
+    public boolean ensolarado(){
+        if(clima == Clima.ENSOLARADO){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+    public void setClimaChuva() {
+        this.clima = Clima.CHUVA;
+    }
+    
+    public void setClimaSol() {
+        this.clima = Clima.ENSOLARADO;
     }
     
     public float getDistancia_pista() {

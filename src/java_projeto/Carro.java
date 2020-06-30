@@ -1,6 +1,7 @@
 package java_projeto;
 
 import java.util.Comparator;
+import java.util.Random;
 
 /**
  *
@@ -26,6 +27,8 @@ public class Carro  {
     private float distancia;
     private float combustivel;
     private Estados estado;
+    private int tempoParado;
+    private float desempenho;
 
     
 
@@ -48,6 +51,8 @@ public class Carro  {
         this.distancia = 0;
         this.combustivel = 100;
         this.estado = Estados.AGUARDANDO_LARGADA;
+        this.tempoParado = 0;
+        this.desempenho = 1;
     }
 
     public int getId() {
@@ -80,7 +85,28 @@ public class Carro  {
         // Incrementar aqui para depois srr aleatório
         this.distancia++;
     }
+
+    public float getDesempenho() {
+        return desempenho;
+    }
+
+    public void setDesempenho(float desempenho) {
+        this.desempenho = desempenho;
+    }
     
+    
+
+    public int getTempoParado() {
+        return tempoParado;
+    }
+
+    public void setTempoParado(int tempoParado) {
+        this.tempoParado = tempoParado;
+    }
+    
+    public void decrementaTempoParado(int tempo){
+        this.tempoParado = this.tempoParado - tempo;
+    }
 
     public float getCombustivel() {
         return combustivel;
@@ -141,6 +167,27 @@ public class Carro  {
     private double calculaQuantosKmPodeCorrer(){
         return (this.combustivel * 156) * .01;
 //        156km --> desempenho do carro com um taque de 120L
+    }
+    
+    public void abasteceCarro(){
+        this.combustivel = 100;
+    }
+    
+    
+    public  boolean furaPneu(float prob){
+       float p = calculaProbabilidadeFurar();
+       if(p <= prob){
+           return true;
+       }
+       else{
+           return false;
+       }
+   }
+    
+    private float calculaProbabilidadeFurar(){
+        Random r = new Random();
+        float value = r.nextInt()*.01f;
+        return value;
     }
     
     
