@@ -123,13 +123,13 @@ public class Corrida {
    }
    
     public ArrayList<Carro> verificaColisao(Clima clima, ArrayList<Equipe> equipe){       
-        ArrayList<Carro> carros = null;
+        ArrayList<Carro> carros = new ArrayList<Carro>();
         for(Equipe e : equipe)carros.add(e.getCarro());
         Carro.ComparadorCarro cc = null;
         cc = new Carro.ComparadorCarro();
         carros.sort(cc);
         ArrayList<Carro> acidentados = new ArrayList<>();
-        float probabilidade = .1f;
+        float probabilidade = .01f;
        
         for(Carro c:carros){
             for(int i = 0; i < carros.size(); i++){
@@ -145,6 +145,8 @@ public class Corrida {
                 }
             }
         }
+        for(Carro c:acidentados)System.out.println(c.getId());
+        
         return acidentados;
     }
        

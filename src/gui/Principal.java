@@ -161,7 +161,7 @@ public class Principal extends javax.swing.JFrame {
     public static void main(String args[]) throws InterruptedException {
         Principal p = new Principal();
         p.setVisible(true);
-
+        
         int num = 1;
         for (Corrida corrida : p.c.getCorridas()) {
             boolean corrida_terminou = false;
@@ -222,9 +222,10 @@ public class Principal extends javax.swing.JFrame {
                                 corrida.getClima(), p.c.getEquipes()
                         );
                         
-                        for(Carro c:acidentados){
-                            c.setEstado(Carro.Estados.QUEBRADO);
-                        }
+                        if(!acidentados.isEmpty())
+                            for(Carro c:acidentados){
+                                c.setEstado(Carro.Estados.QUEBRADO);
+                            }
                         
                         if(carro.furaPneu(0.1f)){
                             carro.setEstado(Carro.Estados.PNEU_FURADO);
@@ -239,7 +240,7 @@ public class Principal extends javax.swing.JFrame {
                 
                 if(corrida.calculaChuva()){                   
                     if(corrida.ensolarado()){
-                       this.alteraJLabel2("Chuvoso"); //atualiza interface para Chuvoso
+                       p.chamaAlteraJLabel2("Chuvoso"); //atualiza interface para Chuvoso
                        corrida.setClimaChuva();
                         for(Equipe e2: p.c.getEquipes()){
                             Carro carro2 = e2.getCarro();
@@ -255,7 +256,7 @@ public class Principal extends javax.swing.JFrame {
                 else{
                     
                     if(corrida.chovendo()){
-                        this.chamaAlteraJLabel2("Ensolarado");
+                        p.chamaAlteraJLabel2("Ensolarado");
                         corrida.setClimaSol();
                         for(Equipe e2: p.c.getEquipes()){
                             Carro carro2 = e2.getCarro();
@@ -285,12 +286,16 @@ public class Principal extends javax.swing.JFrame {
         }
     }
     
-    private void alteraJLabel2(String str){
-        this.jLabel2.setText("Tempo: " + str);
+    private static void alteraJLabel2(String str, javax.swing.JLabel label){
+        label.setText("Tempo: " + str);
     }
     
     private void chamaAlteraJLabel2(String str){
-        this.alteraJLabel2("kaskdka");
+        this.alteraJLabel2(str, this.jLabel2);
+    }
+    
+    private javax.swing.JLabel getLable(){
+        return this.jLabel2;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
