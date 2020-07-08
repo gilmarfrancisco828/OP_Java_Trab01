@@ -6,6 +6,7 @@
 package java_projeto;
 
 import controladores.Controlador_Carro;
+import java.util.ArrayList;
 
 /**
  *
@@ -21,8 +22,8 @@ public class Equipe {
         this.nome = nome;
         this.pontuacao = 0;
         carro = new Carro[2];
-        carro[0] = Controlador_Carro.criarCarro();
-        carro[1] = Controlador_Carro.criarCarro();
+        carro[0] = Controlador_Carro.criarCarro(this);
+        carro[1] = Controlador_Carro.criarCarro(this);
     }
 
     public String getNome() {
@@ -47,6 +48,14 @@ public class Equipe {
 
     public void setCarro(Carro carro, int indice) {
         this.carro[indice] = carro;
-    }
+    }   
     
+    public static ArrayList<Carro> getCarros(ArrayList<Equipe> equipes){
+        ArrayList<Carro> arr = new ArrayList<Carro>();
+        for(Equipe equipe:equipes){
+            arr.add(equipe.getCarro(0));
+            arr.add(equipe.getCarro(1));
+        }
+        return arr;
+    }
 }

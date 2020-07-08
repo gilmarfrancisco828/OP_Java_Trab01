@@ -10,7 +10,7 @@ import java.util.Random;
 public class Carro  {
     
     
-    static class ComparadorCarro implements Comparator<Carro>{
+    public static class ComparadorCarro implements Comparator<Carro>{
         
         @Override
         public  int compare(Carro c1, Carro c2) {
@@ -19,7 +19,23 @@ public class Carro  {
             
             return d1.compareTo(d2);
         }        
-    }   
+    }  
+    
+    public static class ComparadorPosicaoCarro implements Comparator<Carro>{
+        @Override
+        public  int compare(Carro c1, Carro c2) {
+            Integer voltaCarro1 = c1.getVolta();
+            Integer voltaCarro2 = c2.getVolta();
+            
+            if(voltaCarro1 != voltaCarro2){
+                return voltaCarro1.compareTo(voltaCarro2)*(-1);
+            }
+            Float d1 = c1.getDistancia();
+            Float d2 = c2.getDistancia();
+            return d1.compareTo(d2)*(-1);
+        }
+    }
+    
     
     
     private int id;
@@ -32,9 +48,11 @@ public class Carro  {
     private String piloto;
     private int pontosCorrida;
     private int pontuacao;
-
+    private Equipe equipe;
+    private int posicao;
+    private static float probabilidadeFurarPneu = 0.01f;
  
-    
+
     
     public enum Estados{
         AGUARDANDO_LARGADA,
@@ -48,7 +66,7 @@ public class Carro  {
         CORRIDA_FINALIZADA
     }
 
-    public Carro(int id, String piloto) {
+    public Carro(int id, String piloto, Equipe e) {
         this.id = id;
         this.volta = 0;
         this.distancia = 0;
@@ -59,8 +77,13 @@ public class Carro  {
         this.piloto = piloto;
         this.pontosCorrida = 0;
         this.pontuacao = 0;
+        this.equipe = e;
     }
 
+    public Equipe getEquipe(){
+        return this.equipe;
+    }
+    
     public int getId() {
         return id;
     }
@@ -91,11 +114,12 @@ public class Carro  {
         // Incrementar aqui para depois srr aleatório
         //this.distancia++;
         Random r = new Random();
-        int value = r.nextInt(50)+1;
-        value /= 10;
+        float value = r.nextFloat()*5;
         
         System.out.println("Distância aleatória: "+value);
         this.distancia += value;
+        this.decrementaCombustivel(value);
+        
     }
 
     public float getDesempenho() {
@@ -127,11 +151,24 @@ public class Carro  {
     public void setCombustivel(float combustivel) {
         this.combustivel = combustivel;
     }
-    public void decrementaCombustivel(){
-        this.combustivel--;
-        if(this.combustivel <= 0){
-            this.combustivel = (float) 100.0;
-        }
+
+    public void setPosicao(int posicao) {
+        this.posicao = posicao;
+    }
+    
+    public int getPosicao(){
+        return this.posicao;
+    }
+    
+    public void decrementaCombustivel(float dec){
+        
+        float percent = dec/120f;
+        
+        this.combustivel -= percent;
+        
+//        if(this.combustivel <= 0){
+//            this.combustivel = (float) 100.0;
+//        }
     }
     public Estados getEstado() {
         return estado;
@@ -190,13 +227,16 @@ public class Carro  {
     
     public boolean calculaAbastecer(float tamanhoPista, int totalVoltas){
         double kmRestantes = this.calculaQuantosKmPodeCorrer();
-        double kmAPercorrer = (tamanhoPista * totalVoltas) -
-                (this.volta*tamanhoPista + this.distancia);
+        double kmAPercorrer = (tamanhoPista  - this.distancia);
         
         if(kmRestantes < kmAPercorrer){
             return true;
         }
         return false;
+        
+        
+        
+        
     }
     
     private double calculaQuantosKmPodeCorrer(){
@@ -209,9 +249,9 @@ public class Carro  {
     }
     
     
-    public  boolean furaPneu(float prob){
+    public  boolean furaPneu(){
        float p = calculaProbabilidadeFurar();
-       if(p <= prob){
+       if(p<= Carro.probabilidadeFurarPneu){
            return true;
        }
        else{
@@ -221,7 +261,7 @@ public class Carro  {
     
     private float calculaProbabilidadeFurar(){
         Random r = new Random();
-        float value = r.nextInt()*.01f;
+        float value = r.nextInt(101)*.01f;
         return value;
     }
     

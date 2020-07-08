@@ -23,9 +23,8 @@ public class Corrida {
     private Clima clima;
     private String cidade;
 
-    public Corrida(float distancia_pista, int numero_voltas, int dificuldade_pista, float probabilidade_chuva, String cidade) {
-        this.distancia_pista = distancia_pista;
-        this.numero_voltas = numero_voltas;
+    public Corrida(float distancia_pista,  int dificuldade_pista, float probabilidade_chuva, String cidade) {
+        this.setDistancia_pista(distancia_pista);
         this.dificuldade_pista = dificuldade_pista;
         this.probabilidade_chuva = probabilidade_chuva;
         this.cidade = cidade;
@@ -66,6 +65,7 @@ public class Corrida {
 
     public void setDistancia_pista(float distancia_pista) {
         this.distancia_pista = distancia_pista;
+        this.setNumero_voltas( (int)Math.ceil(305f/distancia_pista) );
     }
 
     public int getNumero_voltas() {
@@ -108,8 +108,13 @@ public class Corrida {
         }
 
         Collections.shuffle(ordemLargada);
+        
+        int cont = carros.size();
+        
+        for(Carro carro:ordemLargada)
+            carro.setDistancia(.01f*cont--);         
+        
         return ordemLargada;
-
     }
 
     public boolean calculaChuva() {

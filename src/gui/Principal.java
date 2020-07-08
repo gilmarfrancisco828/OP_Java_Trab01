@@ -6,12 +6,9 @@
 package gui;
 
 import controladores.Controlador_Campeonato;
-import controladores.Controlador_Corrida;
 import controladores.Controlador_TelaCorrida;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java_projeto.Campeonato;
 import java_projeto.Carro;
 import java_projeto.Corrida;
@@ -36,8 +33,6 @@ public class Principal extends javax.swing.JFrame {
         c = Controlador_Campeonato.criarCampeonato("Grande Prêmio das Lolis");
         Controlador_Campeonato.iniciaCampeonato(c);
 
-        tabela = Controlador_TelaCorrida.getTabelaCorrida(c);
-        jTable1.setModel(new CorridaTableModel(tabela));
         jTable1.getTableHeader().setReorderingAllowed(false);
         jTable1.getModel().addTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent e) {
@@ -74,7 +69,7 @@ public class Principal extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         tituloCorrida = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabelEstadoPista = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -105,8 +100,8 @@ public class Principal extends javax.swing.JFrame {
         tituloCorrida.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         tituloCorrida.setText("Corrida N°: 10");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel2.setText("Tempo: Ensolarado");
+        jLabelEstadoPista.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabelEstadoPista.setText("Tempo: Ensolarado");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -119,7 +114,7 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(tituloCorrida, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jLabelEstadoPista, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(791, Short.MAX_VALUE))
         );
@@ -129,7 +124,7 @@ public class Principal extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(tituloCorrida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabelEstadoPista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(19, 19, 19)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
@@ -164,110 +159,115 @@ public class Principal extends javax.swing.JFrame {
         Principal p = new Principal();
         p.setVisible(true);
 
-        ArrayList<Carro> classificacao = new ArrayList<>();
+        ArrayList<Carro> classificacao = new ArrayList<Carro>();
         int cont = 0;
         int num = 1;
         for (Corrida corrida : p.c.getCorridas()) {
             boolean corrida_terminou = false;
             Controlador_TelaCorrida.setTituloCorrida(num++, corrida, p.tituloCorrida);
             // Atualiza a tabela na tela-
-            Controlador_TelaCorrida.atualizarTelaCorrida(p.jTable1, p.c);
+
+            ArrayList<Carro> carros = corrida.geraPosicoes(Equipe.getCarros(
+                    p.c.getEquipes()
+            )
+            );
+            for (int i = 0; i < carros.size(); i++) {
+                carros.get(i).setPosicao(i + 1);
+            }
+            Controlador_TelaCorrida.atualizarTelaCorrida(p.jTable1, p.c, corrida,
+                    Equipe.getCarros(p.c.getEquipes())
+            );
 
             TimeUnit.SECONDS.sleep(Delays.TROCA_CORRIDA.getV());
 
-            for (Equipe e : p.c.getEquipes()) {
-                for (int i = 0; i < 2; i++) {
-                    Carro carro = e.getCarro(i);
-                    carro.setEstado(Carro.Estados.CORRENDO);
-                    carro.mover();
-                }
+            for (Carro carro : carros) {
+                carro.setEstado(Carro.Estados.CORRENDO);
+                carro.mover();
             }
+
             float distancia_pista = corrida.getDistancia_pista();
 
             // LOOP GERAL DE MOVIMENTAÇÃO DA CORRIDA
+//            Armazena os carros que finalizaram a corrida
+            ArrayList<Carro> finalizados = new ArrayList<Carro>();
+
             while (!corrida_terminou) {
                 corrida_terminou = true;
                 //Representa cada instante da corrida
-                for (Equipe e : p.c.getEquipes()) {
-                    for (int i = 0; i < 2; i++) {
-                        Carro carro = e.getCarro(i);
-                        if (carro.getEstado() == Carro.Estados.TROCANDO_PNEU) {
-                            carro.decrementaTempoParado((int) Delays.TEMPO_CORRER.getV()); //decrementa o tempo de espera
-                            if (carro.getTempoParado() <= 0) {
-                                carro.setEstado(Carro.Estados.CORRENDO);
-                                carro.setTempoParado(0);
-                            }
-                            //carro.setEstado(Carro.Estados.TROCANDO_PNEU);
-                        }
-                        if (carro.getEstado() == Carro.Estados.ABASTECENDO) {
-                            carro.decrementaTempoParado((int) Delays.TEMPO_CORRER.getV());//decrementa o tempo de espera
-                            if (carro.getTempoParado() <= 0) {
-                                carro.setEstado(Carro.Estados.CORRENDO);
-                                carro.setTempoParado(0);
-                            }
-                        }
+                ArrayList<Carro> correndo = new ArrayList<Carro>();
 
-                        if (carro.getEstado() != Carro.Estados.CORRIDA_FINALIZADA && carro.getEstado() != Carro.Estados.QUEBRADO) {
-                            corrida_terminou = false;
+                for (Carro carro : carros) {
+
+                    if (carro.getEstado() == Carro.Estados.TROCANDO_PNEU) {
+                        carro.decrementaTempoParado((int) Delays.TEMPO_CORRER.getV()); //decrementa o tempo de espera
+                        if (carro.getTempoParado() <= 0) {
                             carro.setEstado(Carro.Estados.CORRENDO);
-                            if (carro.getDistancia() > distancia_pista) { // Carro terminou a corrida
-                                if (carro.getVolta() == corrida.getNumero_voltas()) {
-                                    carro.setDistancia(0.0f);//Se o carro terminou a corrida, ele deve estar parado na linha de chegada
-                                    carro.setEstado(Carro.Estados.CORRIDA_FINALIZADA);
-                                    if (cont < 10) {
-                                        classificacao.add(carro);
-                                        cont++;
-                                    }
-                                } else { // Correndo normal
-                                    carro.incrementeVoltas();
-                                    carro.setDistancia(carro.getDistancia() - distancia_pista);
-                                }
-                            }
-                            if (carro.getEstado() != Carro.Estados.CORRIDA_FINALIZADA) {
-                                carro.mover();
-                                carro.decrementaCombustivel();
-
-                                if (carro.calculaAbastecer(distancia_pista, corrida.getNumero_voltas())) {
-                                    carro.abasteceCarro(); //abastece o carro
-                                    carro.setEstado(Carro.Estados.ABASTECENDO); //carro.setEstado(Carro.Estados.ABASTECENDO);
-                                    carro.setTempoParado((int) Delays.TEMPO_ABASTECER.getV());
-                                }
-                                ArrayList<Carro> acidentados = corrida.verificaColisao(
-                                        corrida.getClima(), p.c.getEquipes()
-                                );
-
-                                if (!acidentados.isEmpty()) {
-                                    for (Carro c : acidentados) {
-                                        //Já que a função verificaColisao inclui os carros que já finalizaram a corrida 
-                                        //aqui é neccessário fazer essa verificação para não alterar os estados deles
-                                        if (c.getEstado() != Carro.Estados.CORRIDA_FINALIZADA) {
-                                            c.setEstado(Carro.Estados.QUEBRADO);
-                                        }
-                                    }
-                                }
-
-                                if (carro.furaPneu(0.1f)) {
-                                    carro.setEstado(Carro.Estados.PNEU_FURADO);
-                                    carro.setTempoParado((int) Delays.TEMPO_TROCAR_PNEU.getV());
-                                }
-                            }
-                            //VERIFICAR PNEU FUROU
-                            // boolean furouPneu() --> metodoIntermedarioCalculaProbabilidadeFurar()
-                            //se furou irParaBox(tempoEspera) --> deixa o carro parado por um tempo, alterando seu estado
-                            //VERIFICAR TROCAR PNEU
+                            carro.setTempoParado(0);
+                        }
+                        //carro.setEstado(Carro.Estados.TROCANDO_PNEU);
+                    }
+                    if (carro.getEstado() == Carro.Estados.ABASTECENDO) {
+                        carro.decrementaTempoParado((int) Delays.TEMPO_CORRER.getV());//decrementa o tempo de espera
+                        if (carro.getTempoParado() <= 0) {
+                            carro.setEstado(Carro.Estados.CORRENDO);
+                            carro.setTempoParado(0);
                         }
                     }
-                }
 
+                    if (carro.getEstado() != Carro.Estados.CORRIDA_FINALIZADA && carro.getEstado() != Carro.Estados.QUEBRADO) {
+                        corrida_terminou = false;
+                        carro.setEstado(Carro.Estados.CORRENDO);
+                        if (carro.getDistancia() > distancia_pista) { // Carro terminou a corrida
+                            if (carro.getVolta() == corrida.getNumero_voltas()) {
+                                carro.setDistancia(0.0f);//Se o carro terminou a corrida, ele deve estar parado na linha de chegada
+                                carro.setEstado(Carro.Estados.CORRIDA_FINALIZADA);
+                                finalizados.add(carro);
+
+                            } else { // Correndo normal
+                                carro.incrementeVoltas();
+                                carro.setDistancia(carro.getDistancia() - distancia_pista);
+                            }
+                        }
+                        if (carro.getEstado() != Carro.Estados.CORRIDA_FINALIZADA) {
+                            carro.mover();
+
+                            if (carro.calculaAbastecer(distancia_pista, corrida.getNumero_voltas())) {
+                                carro.abasteceCarro(); //abastece o carro
+                                carro.setEstado(Carro.Estados.ABASTECENDO);
+                                carro.setTempoParado((int) Delays.TEMPO_ABASTECER.getV());
+                            }
+                            ArrayList<Carro> acidentados = corrida.verificaColisao(
+                                    corrida.getClima(), p.c.getEquipes()
+                            );
+
+                            if (!acidentados.isEmpty()) {
+                                for (Carro c : acidentados) {
+                                    //Já que a função verificaColisao inclui os carros que já finalizaram a corrida 
+                                    //aqui é neccessário fazer essa verificação para não alterar os estados deles
+                                    if (c.getEstado() != Carro.Estados.CORRIDA_FINALIZADA) {
+                                        c.setEstado(Carro.Estados.QUEBRADO);
+                                    }
+                                }
+                            }
+
+                            if (carro.furaPneu()) {
+                                carro.setEstado(Carro.Estados.PNEU_FURADO);
+                                carro.setTempoParado((int) Delays.TEMPO_TROCAR_PNEU.getV());
+                            }
+                            correndo.add(carro);
+                        }
+                        //VERIFICAR PNEU FUROU
+                        // boolean furouPneu() --> metodoIntermedarioCalculaProbabilidadeFurar()
+                        //se furou irParaBox(tempoEspera) --> deixa o carro parado por um tempo, alterando seu estado
+                        //VERIFICAR TROCAR PNEU
+                    }
+                }
                 if (corrida.calculaChuva()) {
                     if (corrida.ensolarado()) {
                         p.chamaAlteraJLabel2("Chuvoso"); //atualiza interface para Chuvoso
                         corrida.setClimaChuva();
-                        for (Equipe e2 : p.c.getEquipes()) {
-                            for (int i = 0; i < 2; i++) {
-                                Carro carro2 = e2.getCarro(i);
-                                carro2.setDesempenho(0.8f);
-                            }
+                        for (Carro carro : carros) {
+                            carro.setDesempenho(.8f);
                         }
                     }
 
@@ -275,17 +275,25 @@ public class Principal extends javax.swing.JFrame {
                     //atualiza velocidade dos carros
                     //troca pneu
                 } else {
-
                     if (corrida.chovendo()) {
                         p.chamaAlteraJLabel2("Ensolarado");
                         corrida.setClimaSol();
-                        for (Equipe e2 : p.c.getEquipes()) {
-                            for (int i = 0; i < 2; i++) {
-                                Carro carro2 = e2.getCarro(i);
-                                carro2.setDesempenho(1.0f);
-                            }
+                        for (Carro carro : carros) {
+                            carro.setDesempenho(1f);
                         }
                     }
+                }
+
+                Carro.ComparadorPosicaoCarro cp = null;
+                cp = new Carro.ComparadorPosicaoCarro();
+                carros.sort(cp);
+
+                classificacao = new ArrayList<Carro>();
+                classificacao.addAll(finalizados);
+                classificacao.addAll(carros);
+
+                for (int i = 0; i < classificacao.size(); i++) {
+                    classificacao.get(i).setPosicao(i + 1);
                 }
 
                 //AQUI ROLAM TODAS AS PARADA INSANAS
@@ -293,26 +301,24 @@ public class Principal extends javax.swing.JFrame {
                 //VERICIAR ACIDENTE
                 TimeUnit.MILLISECONDS.sleep(5 * Delays.TEMPO_CORRER.getV());
                 // Atualiza a tabela na tela-
-                Controlador_TelaCorrida.atualizarTelaCorrida(p.jTable1, p.c);
+                Controlador_TelaCorrida.atualizarTelaCorrida(p.jTable1, p.c,
+                        corrida, Equipe.getCarros(p.c.getEquipes()));
             }
+
+        }
 //            TODO: Exibir tela de pontuação da corida
 //            TimeUnit.SECONDS.sleep(8 + Delays.TROCA_CORRIDA.getV());
 
-            //Corrida terminou, voltar todos os carros pro estado de esperando largada
-            for (Equipe e : p.c.getEquipes()) {
-                for (int i = 0; i < 2; i++) {
-                    Carro carro = e.getCarro(i);
-                    carro.setEstado(Carro.Estados.AGUARDANDO_LARGADA);
-                    carro.setDistancia(0);
-                }
-            }
-
-            
-            ClassificacaoCorrida classific = new ClassificacaoCorrida(classificacao);
-            classific.setVisible(true);
-            TimeUnit.SECONDS.sleep(10);
-            classific.setVisible(false);
+        //Corrida terminou, voltar todos os carros pro estado de esperando largada
+        for (Carro carro : Equipe.getCarros(p.c.getEquipes())) {
+            carro.setEstado(Carro.Estados.AGUARDANDO_LARGADA);
+            carro.setDistancia(0);
         }
+
+        ClassificacaoCorrida classific = new ClassificacaoCorrida(classificacao);
+        classific.setVisible(true);
+        TimeUnit.SECONDS.sleep(10);
+        classific.setVisible(false);
     }
 
     private static void alteraJLabel2(String str, javax.swing.JLabel label) {
@@ -320,16 +326,16 @@ public class Principal extends javax.swing.JFrame {
     }
 
     private void chamaAlteraJLabel2(String str) {
-        this.alteraJLabel2(str, this.jLabel2);
+        this.alteraJLabel2(str, this.jLabelEstadoPista);
     }
 
     private javax.swing.JLabel getLable() {
-        return this.jLabel2;
+        return this.jLabelEstadoPista;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelEstadoPista;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;

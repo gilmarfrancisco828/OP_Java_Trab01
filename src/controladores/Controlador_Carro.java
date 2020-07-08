@@ -6,6 +6,7 @@
 package controladores;
 
 import java_projeto.Carro;
+import java_projeto.Equipe;
 
 /**
  *
@@ -15,8 +16,8 @@ public class Controlador_Carro {
     
     static int cont = 0;
     
-    public static Carro criarCarro(){
-        Carro carro = new Carro(cont, "Piloto "+cont);
+    public static Carro criarCarro(Equipe e){
+        Carro carro = new Carro(cont, "Piloto "+cont, e);
         cont ++;
         return carro;
     }

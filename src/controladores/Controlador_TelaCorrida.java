@@ -24,56 +24,57 @@ public class Controlador_TelaCorrida {
         titulo.setText("Corrida N°: " + num + " - Cidade: " + c.getCidade());
     }
 
-    public static ArrayList<String[]> getTabelaCorrida(Campeonato c) {
+    public static ArrayList<String[]> getTabelaCorrida(Campeonato c,
+            Corrida corrida, ArrayList<Carro> carros) {
         ArrayList<String[]> tabela = new ArrayList<>();
 
         String[] linha = new String[21];
         linha[0] = "Posição";
         int j = 1;
-        for (Equipe e : c.getEquipes()) {
-            for (int i = 0; i < 2; i++) {
-                Carro carro = e.getCarro(i);
-                linha[j++] = carro.getDistancia() + "(" + carro.getVolta() + ")";
-            }
+
+        
+        for(Carro carro:carros){
+            linha[j++] = carro.getPosicao() + "(" + carro.getVolta() + ")";
         }
+        
+     
         tabela.add(linha);
 
         linha = new String[21];
         linha[0] = "Estado";
         j = 1;
-        for (Equipe e : c.getEquipes()) {
-            for (int i = 0; i < 2; i++) {
-                Carro carro = e.getCarro(i);
-                linha[j++] = carro.getEstadoString();
-            }
+
+        for(Carro carro:carros){
+            linha[j++] = carro.getEstadoString();
         }
         tabela.add(linha);
 
         linha = new String[21];
         linha[0] = "Equipe";
         j = 1;
-        for (Equipe e : c.getEquipes()) {
-            for (int i = 0; i < 2; i++) {
-                linha[j++] = e.getNome();
-            }
+      
+        for(Carro carro:carros){
+            linha[j++] = carro.getEquipe().getNome();
         }
         tabela.add(linha);
 
         linha = new String[21];
         linha[0] = "Combustível";
         j = 1;
-        for (Equipe e : c.getEquipes()) {
-            for (int i = 0; i < 2; i++) {
-                Carro carro = e.getCarro(i);
-                linha[j++] = Float.toString(carro.getCombustivel());
-            }
+        
+
+        for(Carro carro:carros){
+            System.out.println("Carro["+carro.getId()+"]: "+carro.getCombustivel());
+            linha[j++] = Float.toString(carro.getCombustivel());
         }
+        
+        
         tabela.add(linha);
         return tabela;
     }
 
-    public static void atualizarTelaCorrida(JTable t, Campeonato c) {
-        t.setModel(new CorridaTableModel(getTabelaCorrida(c)));
+    public static void atualizarTelaCorrida(JTable t, Campeonato c,
+            Corrida corrida, ArrayList<Carro> carros) {
+        t.setModel(new CorridaTableModel(getTabelaCorrida(c, corrida, carros)));
     }
-
 }

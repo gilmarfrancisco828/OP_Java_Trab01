@@ -16,14 +16,14 @@ import java_projeto.Equipe;
  */
 public class Controlador_Corrida {
     
-    public static Corrida criaCorrida(float distancia_pista, int numero_voltas, int dificuldade_pista, float probabilidade_chuva, String cidade){
-        Corrida corrida = new Corrida(distancia_pista, numero_voltas, dificuldade_pista, probabilidade_chuva, cidade);
+    public static Corrida criaCorrida(float distancia_pista, int dificuldade_pista, float probabilidade_chuva, String cidade){
+        Corrida corrida = new Corrida(distancia_pista, dificuldade_pista, probabilidade_chuva, cidade);
         return corrida;
     }
     public static ArrayList<Corrida> gerarCorridas(){
         ArrayList<Corrida> corridas = new ArrayList<>();
         for(int i = 0; i < 3; i++){
-            Corrida c = new Corrida(10.0f, 3, 2, 0.1f, "Cidade de Teste");
+            Corrida c = new Corrida(10.0f, 2, 0.1f, "Cidade de Teste");
             corridas.add(c);
         }
         return corridas;
