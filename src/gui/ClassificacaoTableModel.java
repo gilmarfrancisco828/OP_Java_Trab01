@@ -8,22 +8,18 @@ package gui;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
-/**
- *
- * @author Parafuso de Oliveira
- */
-public class CorridaTableModel extends AbstractTableModel{
+
+public class ClassificacaoTableModel extends AbstractTableModel{
     private ArrayList<String []> tabela;
      private String[] colunas;
 
-    public CorridaTableModel(ArrayList<String []> tabela) {
-        this.colunas = new String[21];
-        this.colunas[0] = " ";
+    public ClassificacaoTableModel(ArrayList<String []> tabela) {
         this.tabela = tabela;
-        for (int i = 1; i <= 20; i++) {
-            this.colunas[i] = "Carro " + i;
-        }
-        
+        this.colunas = new String[4];
+        this.colunas[0] = "Posição";
+        this.colunas[1] = "Piloto";
+        this.colunas[2] = "Equipe";
+        this.colunas[3] = "Pontos";
     }
     
     

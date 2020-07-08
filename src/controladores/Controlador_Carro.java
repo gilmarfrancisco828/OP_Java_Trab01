@@ -16,7 +16,7 @@ public class Controlador_Carro {
     static int cont = 0;
     
     public static Carro criarCarro(){
-        Carro carro = new Carro(cont);
+        Carro carro = new Carro(cont, "Piloto "+cont);
         cont ++;
         return carro;
     }

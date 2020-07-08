@@ -15,12 +15,14 @@ public class Equipe {
     
     private String nome;
     private int pontuacao;
-    private Carro carro;
+    private Carro[] carro;
 
     public Equipe(String nome) {
         this.nome = nome;
         this.pontuacao = 0;
-        carro = Controlador_Carro.criarCarro();
+        carro = new Carro[2];
+        carro[0] = Controlador_Carro.criarCarro();
+        carro[1] = Controlador_Carro.criarCarro();
     }
 
     public String getNome() {
@@ -39,14 +41,12 @@ public class Equipe {
         this.pontuacao = pontuacao;
     }
 
-    public Carro getCarro() {
-        return carro;
+    public Carro getCarro(int indice) {
+        return carro[indice];
     }
 
-    public void setCarro(Carro carro) {
-        this.carro = carro;
+    public void setCarro(Carro carro, int indice) {
+        this.carro[indice] = carro;
     }
-    
-    
     
 }

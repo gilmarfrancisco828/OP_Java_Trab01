@@ -80,13 +80,13 @@ public class Principal extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Posição", null, null, null, null, null, null, null, null, null, null},
-                {"Estado", null, null, null, null, null, null, null, null, null, null},
-                {"Equipe", null, null, null, null, null, null, null, null, null, null},
-                {"Combustível", null, null, null, null, null, null, null, null, null, null}
+                {"Posição", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {"Estado", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {"Equipe", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {"Combustível", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "", "Carro 1", "Carro 2", "Carro 3", "Carro 4", "Carro 5", "Carro 6", "Carro 7", "Carro 8", "Carro 9", "Carro 10"
+                "", "Carro 1", "Carro 2", "Carro 3", "Carro 4", "Carro 5", "Carro 6", "Carro 7", "Carro 8", "Carro 9", "Carro 10", "Carro 11", "Carro 12", "Carro 13", "Carro 14", "Carro 15", "Carro 16", "Carro 17", "Carro 18", "Carro 19", "Carro 20"
             }
         ));
         jTable1.getTableHeader().setReorderingAllowed(false);
@@ -121,7 +121,7 @@ public class Principal extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(99, Short.MAX_VALUE))
+                .addContainerGap(791, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,18 +134,20 @@ public class Principal extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(28, 28, 28)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -161,7 +163,9 @@ public class Principal extends javax.swing.JFrame {
     public static void main(String args[]) throws InterruptedException {
         Principal p = new Principal();
         p.setVisible(true);
-        
+
+        ArrayList<Carro> classificacao = new ArrayList<>();
+        int cont = 0;
         int num = 1;
         for (Corrida corrida : p.c.getCorridas()) {
             boolean corrida_terminou = false;
@@ -172,103 +176,121 @@ public class Principal extends javax.swing.JFrame {
             TimeUnit.SECONDS.sleep(Delays.TROCA_CORRIDA.getV());
 
             for (Equipe e : p.c.getEquipes()) {
-                Carro carro = e.getCarro();
-                carro.setEstado(Carro.Estados.CORRENDO);
-                carro.mover();
+                for (int i = 0; i < 2; i++) {
+                    Carro carro = e.getCarro(i);
+                    carro.setEstado(Carro.Estados.CORRENDO);
+                    carro.mover();
+                }
             }
             float distancia_pista = corrida.getDistancia_pista();
-            
+
             // LOOP GERAL DE MOVIMENTAÇÃO DA CORRIDA
             while (!corrida_terminou) {
                 corrida_terminou = true;
                 //Representa cada instante da corrida
                 for (Equipe e : p.c.getEquipes()) {
-                    Carro carro = e.getCarro();
-                    if(carro.getEstado() == Carro.Estados.TROCANDO_PNEU){
-                        carro.decrementaTempoParado((int)Delays.TEMPO_CORRER.getV()); //decrementa o tempo de espera
-                        if(carro.getTempoParado() <= 0){
-                            carro.setEstado(Carro.Estados.CORRENDO);
-                            carro.setTempoParado(0);
-                        }
+                    for (int i = 0; i < 2; i++) {
+                        Carro carro = e.getCarro(i);
+                        if (carro.getEstado() == Carro.Estados.TROCANDO_PNEU) {
+                            carro.decrementaTempoParado((int) Delays.TEMPO_CORRER.getV()); //decrementa o tempo de espera
+                            if (carro.getTempoParado() <= 0) {
+                                carro.setEstado(Carro.Estados.CORRENDO);
+                                carro.setTempoParado(0);
+                            }
                             //carro.setEstado(Carro.Estados.TROCANDO_PNEU);
-                    }
-                    if(carro.getEstado() == Carro.Estados.ABASTECENDO){
-                        carro.decrementaTempoParado((int)Delays.TEMPO_CORRER.getV());//decrementa o tempo de espera
-                        if(carro.getTempoParado() <= 0){
+                        }
+                        if (carro.getEstado() == Carro.Estados.ABASTECENDO) {
+                            carro.decrementaTempoParado((int) Delays.TEMPO_CORRER.getV());//decrementa o tempo de espera
+                            if (carro.getTempoParado() <= 0) {
+                                carro.setEstado(Carro.Estados.CORRENDO);
+                                carro.setTempoParado(0);
+                            }
+                        }
+
+                        if (carro.getEstado() != Carro.Estados.CORRIDA_FINALIZADA && carro.getEstado() != Carro.Estados.QUEBRADO) {
+                            corrida_terminou = false;
                             carro.setEstado(Carro.Estados.CORRENDO);
-                            carro.setTempoParado(0);
-                        }
-                    }
-                    
-                    if(carro.getEstado() != Carro.Estados.CORRIDA_FINALIZADA){
-                        corrida_terminou = false;
-                        carro.setEstado(Carro.Estados.CORRENDO);
-                        if (carro.getDistancia() > distancia_pista) { // Carro terminou a corrida
-                            if (carro.getVolta() == corrida.getNumero_voltas()) {
-                                carro.setEstado(Carro.Estados.CORRIDA_FINALIZADA);
-                            } else { // Correndo normal
-                                carro.incrementeVoltas();
-                                carro.setDistancia(carro.getDistancia() - distancia_pista);
+                            if (carro.getDistancia() > distancia_pista) { // Carro terminou a corrida
+                                if (carro.getVolta() == corrida.getNumero_voltas()) {
+                                    carro.setDistancia(0.0f);//Se o carro terminou a corrida, ele deve estar parado na linha de chegada
+                                    carro.setEstado(Carro.Estados.CORRIDA_FINALIZADA);
+                                    if (cont < 10) {
+                                        classificacao.add(carro);
+                                        cont++;
+                                    }
+                                } else { // Correndo normal
+                                    carro.incrementeVoltas();
+                                    carro.setDistancia(carro.getDistancia() - distancia_pista);
+                                }
                             }
-                        }
-                        carro.mover();
-                        carro.decrementaCombustivel();
-                        if (carro.calculaAbastecer(distancia_pista, corrida.getNumero_voltas())){
-                            carro.abasteceCarro(); //abastece o carro
-                            carro.setEstado(Carro.Estados.ABASTECENDO); //carro.setEstado(Carro.Estados.ABASTECENDO);
-                            carro.setTempoParado((int)Delays.TEMPO_ABASTECER.getV());
-                        }
-                        ArrayList<Carro> acidentados = corrida.verificaColisao(
-                                corrida.getClima(), p.c.getEquipes()
-                        );
-                        
-                        if(!acidentados.isEmpty())
-                            for(Carro c:acidentados){
-                                c.setEstado(Carro.Estados.QUEBRADO);
+                            if (carro.getEstado() != Carro.Estados.CORRIDA_FINALIZADA) {
+                                carro.mover();
+                                carro.decrementaCombustivel();
+
+                                if (carro.calculaAbastecer(distancia_pista, corrida.getNumero_voltas())) {
+                                    carro.abasteceCarro(); //abastece o carro
+                                    carro.setEstado(Carro.Estados.ABASTECENDO); //carro.setEstado(Carro.Estados.ABASTECENDO);
+                                    carro.setTempoParado((int) Delays.TEMPO_ABASTECER.getV());
+                                }
+                                ArrayList<Carro> acidentados = corrida.verificaColisao(
+                                        corrida.getClima(), p.c.getEquipes()
+                                );
+
+                                if (!acidentados.isEmpty()) {
+                                    for (Carro c : acidentados) {
+                                        //Já que a função verificaColisao inclui os carros que já finalizaram a corrida 
+                                        //aqui é neccessário fazer essa verificação para não alterar os estados deles
+                                        if (c.getEstado() != Carro.Estados.CORRIDA_FINALIZADA) {
+                                            c.setEstado(Carro.Estados.QUEBRADO);
+                                        }
+                                    }
+                                }
+
+                                if (carro.furaPneu(0.1f)) {
+                                    carro.setEstado(Carro.Estados.PNEU_FURADO);
+                                    carro.setTempoParado((int) Delays.TEMPO_TROCAR_PNEU.getV());
+                                }
                             }
-                        
-                        if(carro.furaPneu(0.1f)){
-                            carro.setEstado(Carro.Estados.PNEU_FURADO);
-                            carro.setTempoParado((int)Delays.TEMPO_TROCAR_PNEU.getV());
+                            //VERIFICAR PNEU FUROU
+                            // boolean furouPneu() --> metodoIntermedarioCalculaProbabilidadeFurar()
+                            //se furou irParaBox(tempoEspera) --> deixa o carro parado por um tempo, alterando seu estado
+                            //VERIFICAR TROCAR PNEU
                         }
-                        //VERIFICAR PNEU FUROU
-                        // boolean furouPneu() --> metodoIntermedarioCalculaProbabilidadeFurar()
-                        //se furou irParaBox(tempoEspera) --> deixa o carro parado por um tempo, alterando seu estado
-                        //VERIFICAR TROCAR PNEU
                     }
                 }
-                
-                if(corrida.calculaChuva()){                   
-                    if(corrida.ensolarado()){
-                       p.chamaAlteraJLabel2("Chuvoso"); //atualiza interface para Chuvoso
-                       corrida.setClimaChuva();
-                        for(Equipe e2: p.c.getEquipes()){
-                            Carro carro2 = e2.getCarro();
-                            carro2.setDesempenho(0.8f);
-                        } 
+
+                if (corrida.calculaChuva()) {
+                    if (corrida.ensolarado()) {
+                        p.chamaAlteraJLabel2("Chuvoso"); //atualiza interface para Chuvoso
+                        corrida.setClimaChuva();
+                        for (Equipe e2 : p.c.getEquipes()) {
+                            for (int i = 0; i < 2; i++) {
+                                Carro carro2 = e2.getCarro(i);
+                                carro2.setDesempenho(0.8f);
+                            }
+                        }
                     }
-                    
-                    
-                            //atualiza estatisticas de corrida
-                            //atualiza velocidade dos carros
-                            //troca pneu
-                }  
-                else{
-                    
-                    if(corrida.chovendo()){
+
+                    //atualiza estatisticas de corrida
+                    //atualiza velocidade dos carros
+                    //troca pneu
+                } else {
+
+                    if (corrida.chovendo()) {
                         p.chamaAlteraJLabel2("Ensolarado");
                         corrida.setClimaSol();
-                        for(Equipe e2: p.c.getEquipes()){
-                            Carro carro2 = e2.getCarro();
-                            carro2.setDesempenho(1.0f);
+                        for (Equipe e2 : p.c.getEquipes()) {
+                            for (int i = 0; i < 2; i++) {
+                                Carro carro2 = e2.getCarro(i);
+                                carro2.setDesempenho(1.0f);
+                            }
                         }
                     }
                 }
-                
+
                 //AQUI ROLAM TODAS AS PARADA INSANAS
                 //VERIFICAR MUDANCA DE CLIMA
                 //VERICIAR ACIDENTE
-                
                 TimeUnit.MILLISECONDS.sleep(5 * Delays.TEMPO_CORRER.getV());
                 // Atualiza a tabela na tela-
                 Controlador_TelaCorrida.atualizarTelaCorrida(p.jTable1, p.c);
@@ -278,23 +300,30 @@ public class Principal extends javax.swing.JFrame {
 
             //Corrida terminou, voltar todos os carros pro estado de esperando largada
             for (Equipe e : p.c.getEquipes()) {
-                Carro carro = e.getCarro();
-                carro.setEstado(Carro.Estados.AGUARDANDO_LARGADA);
-                carro.setDistancia(0);
+                for (int i = 0; i < 2; i++) {
+                    Carro carro = e.getCarro(i);
+                    carro.setEstado(Carro.Estados.AGUARDANDO_LARGADA);
+                    carro.setDistancia(0);
+                }
             }
-            TimeUnit.SECONDS.sleep(20);
+
+            
+            ClassificacaoCorrida classific = new ClassificacaoCorrida(classificacao);
+            classific.setVisible(true);
+            TimeUnit.SECONDS.sleep(10);
+            classific.setVisible(false);
         }
     }
-    
-    private static void alteraJLabel2(String str, javax.swing.JLabel label){
+
+    private static void alteraJLabel2(String str, javax.swing.JLabel label) {
         label.setText("Tempo: " + str);
     }
-    
-    private void chamaAlteraJLabel2(String str){
+
+    private void chamaAlteraJLabel2(String str) {
         this.alteraJLabel2(str, this.jLabel2);
     }
-    
-    private javax.swing.JLabel getLable(){
+
+    private javax.swing.JLabel getLable() {
         return this.jLabel2;
     }
 

@@ -17,7 +17,7 @@ public class Carro  {
             Float d1 = c1.getDistancia();
             Float d2 = c2.getDistancia();
             
-            return d1.compareTo(d1);
+            return d1.compareTo(d2);
         }        
     }   
     
@@ -29,9 +29,12 @@ public class Carro  {
     private Estados estado;
     private int tempoParado;
     private float desempenho;
+    private String piloto;
+    private int pontosCorrida;
+    private int pontuacao;
 
+ 
     
-
     
     public enum Estados{
         AGUARDANDO_LARGADA,
@@ -45,7 +48,7 @@ public class Carro  {
         CORRIDA_FINALIZADA
     }
 
-    public Carro(int id) {
+    public Carro(int id, String piloto) {
         this.id = id;
         this.volta = 0;
         this.distancia = 0;
@@ -53,6 +56,9 @@ public class Carro  {
         this.estado = Estados.AGUARDANDO_LARGADA;
         this.tempoParado = 0;
         this.desempenho = 1;
+        this.piloto = piloto;
+        this.pontosCorrida = 0;
+        this.pontuacao = 0;
     }
 
     public int getId() {
@@ -83,7 +89,13 @@ public class Carro  {
     
     public void mover() {
         // Incrementar aqui para depois srr aleatório
-        this.distancia++;
+        //this.distancia++;
+        Random r = new Random();
+        int value = r.nextInt(50)+1;
+        value /= 10;
+        
+        System.out.println("Distância aleatória: "+value);
+        this.distancia += value;
     }
 
     public float getDesempenho() {
@@ -152,6 +164,29 @@ public class Carro  {
         this.estado = estado;
     }
     
+    public String getPiloto() {
+        return piloto;
+    }
+
+    public int getPontosCorrida() {
+        return pontosCorrida;
+    }
+
+    public void setPiloto(String piloto) {
+        this.piloto = piloto;
+    }
+
+    public void setPontosCorrida(int pontosCorrida) {
+        this.pontosCorrida = pontosCorrida;
+    }
+    
+    public int getPontuacao() {
+        return pontuacao;
+    }
+
+    public void setPontuacao(int pontuacao) {
+        this.pontuacao += pontuacao;
+    }
     
     public boolean calculaAbastecer(float tamanhoPista, int totalVoltas){
         double kmRestantes = this.calculaQuantosKmPodeCorrer();

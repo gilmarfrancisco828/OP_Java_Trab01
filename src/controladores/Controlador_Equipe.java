@@ -24,7 +24,7 @@ public class Controlador_Equipe {
         ArrayList<Equipe> equipes = new ArrayList<>();
         for(int i = 1; i <= 10; i++){
             Equipe e = new Equipe("Equipe" + i);
-            e.setCarro(Controlador_Carro.criarCarro());
+            //e.setCarro(Controlador_Carro.criarCarro());
             equipes.add(e);
         }
         return equipes;

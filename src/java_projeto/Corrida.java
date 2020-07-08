@@ -1,4 +1,4 @@
- package java_projeto;
+package java_projeto;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,11 +11,11 @@ import java_projeto.Carro.ComparadorCarro;
  * @author Matheus
  */
 public class Corrida {
-    
-    public enum Clima{
+
+    public enum Clima {
         CHUVA, ENSOLARADO
     }
-    
+
     private float distancia_pista;
     private int numero_voltas;
     private int dificuldade_pista;
@@ -27,29 +27,27 @@ public class Corrida {
         this.distancia_pista = distancia_pista;
         this.numero_voltas = numero_voltas;
         this.dificuldade_pista = dificuldade_pista;
-        this.probabilidade_chuva = probabilidade_chuva; 
+        this.probabilidade_chuva = probabilidade_chuva;
         this.cidade = cidade;
         this.clima = Clima.ENSOLARADO;
     }
 
-    public Clima getClima(){
+    public Clima getClima() {
         return clima;
     }
-    
-    public boolean chovendo(){
-        if(clima == Clima.CHUVA){
+
+    public boolean chovendo() {
+        if (clima == Clima.CHUVA) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
-    
-    public boolean ensolarado(){
-        if(clima == Clima.ENSOLARADO){
+
+    public boolean ensolarado() {
+        if (clima == Clima.ENSOLARADO) {
             return true;
-        }
-        else{
+        } else {
             return false;
         }
     }
@@ -57,11 +55,11 @@ public class Corrida {
     public void setClimaChuva() {
         this.clima = Clima.CHUVA;
     }
-    
+
     public void setClimaSol() {
         this.clima = Clima.ENSOLARADO;
     }
-    
+
     public float getDistancia_pista() {
         return distancia_pista;
     }
@@ -101,72 +99,82 @@ public class Corrida {
     public void setCidade(String cidade) {
         this.cidade = cidade;
     }
-    
-    
-   public ArrayList<Carro> geraPosicoes(ArrayList<Carro> carros){
-       ArrayList<Carro> ordemLargada= new ArrayList<>();
-       
-       for(Carro c:carros)
-           ordemLargada.add(c);
-       
-       Collections.shuffle(ordemLargada);
-       return ordemLargada;
-       
-   }
-   
-   
-   public boolean calculaChuva(){
-       Random r = new Random();
-       int value = r.nextInt(101);
-       if( (this.probabilidade_chuva * 100) < value)return false;
-       return true;
-   }
-   
-    public ArrayList<Carro> verificaColisao(Clima clima, ArrayList<Equipe> equipe){       
+
+    public ArrayList<Carro> geraPosicoes(ArrayList<Carro> carros) {
+        ArrayList<Carro> ordemLargada = new ArrayList<>();
+
+        for (Carro c : carros) {
+            ordemLargada.add(c);
+        }
+
+        Collections.shuffle(ordemLargada);
+        return ordemLargada;
+
+    }
+
+    public boolean calculaChuva() {
+        Random r = new Random();
+        int value = r.nextInt(101);
+        if ((this.probabilidade_chuva * 100) < value) {
+            return false;
+        }
+        return true;
+    }
+
+    public ArrayList<Carro> verificaColisao(Clima clima, ArrayList<Equipe> equipe) {
         ArrayList<Carro> carros = new ArrayList<Carro>();
-        for(Equipe e : equipe)carros.add(e.getCarro());
+        for (Equipe e : equipe) {
+            for (int i = 0; i < 2; i++) {
+                if (e.getCarro(i).getEstado() != Carro.Estados.CORRIDA_FINALIZADA && e.getCarro(i).getEstado() != Carro.Estados.QUEBRADO) {
+                    carros.add(e.getCarro(i));
+                }
+            }
+        }
         Carro.ComparadorCarro cc = null;
         cc = new Carro.ComparadorCarro();
         carros.sort(cc);
         ArrayList<Carro> acidentados = new ArrayList<>();
         float probabilidade = .01f;
-       
-        for(Carro c:carros){
-            for(int i = 0; i < carros.size(); i++){
-                if(c.getId()!= carros.get(i).getId()){
-                    if(c.getDistancia() == carros.get(i).getDistancia()){
-                        if(ocorreuAcidente(clima, probabilidade)){
-                            if(!acidentados.contains(c))
+
+        for (Carro c : carros) {
+            for (int i = 0; i < carros.size(); i++) {
+                if (c.getId() != carros.get(i).getId()) {
+                    if (c.getDistancia() == carros.get(i).getDistancia()) {
+                        if (ocorreuAcidente(clima, probabilidade)) {
+                            if (!acidentados.contains(c)) {
                                 acidentados.add(c);
-                            if(!acidentados.contains(carros.get(i)))
+                            }
+                            if (!acidentados.contains(carros.get(i))) {
                                 acidentados.add(carros.get(i));
-                       }
-                   }
+                            }
+                        }
+                    }
                 }
             }
         }
-        for(Carro c:acidentados)System.out.println(c.getId());
-        
+        for (Carro c : acidentados) {
+            System.out.println("Acidentado: " + c.getId());
+        }
+
         return acidentados;
     }
-       
-    private boolean ocorreuAcidente(Clima clima, float prob){
-        Random r = new Random();
-        float value = r.nextInt(101)*.01f;
 
-        if(clima == Clima.CHUVA){
-            if(value < prob+.22)
+    private boolean ocorreuAcidente(Clima clima, float prob) {
+        Random r = new Random();
+        float value = (r.nextInt(101)+1) * .01f;
+
+        if (clima == Clima.CHUVA) {
+            prob += .09;
+            if (value < prob) {
                 return true;
+            }
             return false;
         }
-        
-        if(value < prob)
+
+        if (value < prob) {
             return true;
+        }
         return false;
     }
-       
-}
-   
-   
-   
 
+}

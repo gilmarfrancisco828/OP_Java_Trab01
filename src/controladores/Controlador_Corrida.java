@@ -23,7 +23,7 @@ public class Controlador_Corrida {
     public static ArrayList<Corrida> gerarCorridas(){
         ArrayList<Corrida> corridas = new ArrayList<>();
         for(int i = 0; i < 3; i++){
-            Corrida c = new Corrida(15.0f, 3, 2, 0.1f, "Cidade de Teste");
+            Corrida c = new Corrida(10.0f, 3, 2, 0.1f, "Cidade de Teste");
             corridas.add(c);
         }
         return corridas;

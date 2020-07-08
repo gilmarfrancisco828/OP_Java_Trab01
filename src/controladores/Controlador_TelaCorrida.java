@@ -27,38 +27,46 @@ public class Controlador_TelaCorrida {
     public static ArrayList<String[]> getTabelaCorrida(Campeonato c) {
         ArrayList<String[]> tabela = new ArrayList<>();
 
-        String[] linha = new String[11];
+        String[] linha = new String[21];
         linha[0] = "Posição";
         int j = 1;
         for (Equipe e : c.getEquipes()) {
-            Carro carro = e.getCarro();
-            linha[j++] = carro.getDistancia() + "(" + carro.getVolta() + ")";
+            for (int i = 0; i < 2; i++) {
+                Carro carro = e.getCarro(i);
+                linha[j++] = carro.getDistancia() + "(" + carro.getVolta() + ")";
+            }
         }
         tabela.add(linha);
 
-        linha = new String[11];
+        linha = new String[21];
         linha[0] = "Estado";
         j = 1;
         for (Equipe e : c.getEquipes()) {
-            Carro carro = e.getCarro();
-            linha[j++] = carro.getEstadoString();
+            for (int i = 0; i < 2; i++) {
+                Carro carro = e.getCarro(i);
+                linha[j++] = carro.getEstadoString();
+            }
         }
         tabela.add(linha);
 
-        linha = new String[11];
+        linha = new String[21];
         linha[0] = "Equipe";
         j = 1;
         for (Equipe e : c.getEquipes()) {
-            linha[j++] = e.getNome();
+            for (int i = 0; i < 2; i++) {
+                linha[j++] = e.getNome();
+            }
         }
         tabela.add(linha);
 
-        linha = new String[11];
+        linha = new String[21];
         linha[0] = "Combustível";
         j = 1;
         for (Equipe e : c.getEquipes()) {
-            Carro carro = e.getCarro();
-            linha[j++] = Float.toString(carro.getCombustivel());
+            for (int i = 0; i < 2; i++) {
+                Carro carro = e.getCarro(i);
+                linha[j++] = Float.toString(carro.getCombustivel());
+            }
         }
         tabela.add(linha);
         return tabela;
