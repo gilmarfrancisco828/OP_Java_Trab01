@@ -162,9 +162,17 @@ public class Principal extends javax.swing.JFrame {
         ArrayList<Carro> classificacao = new ArrayList<Carro>();
         int cont = 0;
         int num = 1;
+        
+        int contClima = 0; //Contador para limitar mudança de tempo
+        int tempoChuva = 0; // Variável para marcar quantas iterações a chuva vai durar
+        
         for (Corrida corrida : p.c.getCorridas()) {
             boolean corrida_terminou = false;
             Controlador_TelaCorrida.setTituloCorrida(num++, corrida, p.tituloCorrida);
+            
+            contClima = 0;
+            tempoChuva = 0;
+            
             // Atualiza a tabela na tela-
 
             ArrayList<Carro> carros = corrida.geraPosicoes(Equipe.getCarros(
@@ -262,25 +270,32 @@ public class Principal extends javax.swing.JFrame {
                         //VERIFICAR TROCAR PNEU
                     }
                 }
-                if (corrida.calculaChuva()) {
+                
+                if(contClima == 1){ // Controlar o tempo da chuva
+                    tempoChuva ++;
+                }
+                
+                if (corrida.calculaChuva() && contClima < 2) {
                     if (corrida.ensolarado()) {
                         p.chamaAlteraJLabel2("Chuvoso"); //atualiza interface para Chuvoso
                         corrida.setClimaChuva();
                         for (Carro carro : carros) {
                             carro.setDesempenho(.8f);
                         }
+                        contClima ++;
                     }
 
                     //atualiza estatisticas de corrida
                     //atualiza velocidade dos carros
                     //troca pneu
-                } else {
+                } else if (contClima < 2 && tempoChuva > 5){
                     if (corrida.chovendo()) {
                         p.chamaAlteraJLabel2("Ensolarado");
                         corrida.setClimaSol();
                         for (Carro carro : carros) {
                             carro.setDesempenho(1f);
                         }
+                        contClima++;
                     }
                 }
 
