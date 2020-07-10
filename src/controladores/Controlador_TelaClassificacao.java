@@ -7,6 +7,9 @@ package controladores;
 
 import java.util.ArrayList;
 import java_projeto.Carro;
+import java_projeto.Corrida;
+import java_projeto.Equipe;
+import javax.swing.JLabel;
 
 /**
  *
@@ -14,71 +17,93 @@ import java_projeto.Carro;
  */
 public class Controlador_TelaClassificacao {
 
+    public static void setTituloClassificaoCorrida(Corrida c, JLabel titulo) {
+        titulo.setText("Classificação: Grande Prêmio de " + c.getCidade());
+    }
     
-    public static ArrayList<String[]> getTabelaClassificacao(ArrayList<Carro> carros) {
+    public static ArrayList<String[]> getTabelaClassificacao(ArrayList<Carro> carros, ArrayList<Equipe> equipes) {
          ArrayList<String[]> tabela = new ArrayList<>();
         
         int posicao = 1;
+        Equipe equipe = null;
         for (Carro carro : carros) {
+                for(Equipe e : equipes){
+                    for(int i = 0; i < 2; i++){
+                        if(carro.getId() == e.getCarro(i).getId()){
+                            equipe = e;
+                        }
+                    }
+                }
                 String[] linha = new String[4];
                 linha[0] = posicao + "º";
                 linha[1] = carro.getPiloto();
-                linha[2] = "Equipe";
-                linha[3] = Integer.toString(carro.getPontosCorrida()); 
-                tabela.add(linha); 
+                linha[2] = equipe.getNome();
+                
                 
                 switch(posicao){
                     case 1:
-                        carro.setPontosCorrida(25);
                         carro.setPontuacao(25);
-                        //equipe.setPontos();
+                        equipe.setPontuacao(25);
+                        equipe.setPontosCorrida(25);
+                        linha[3] = "25";
                         break;
                     case 2:
-                        carro.setPontosCorrida(18);
                         carro.setPontuacao(18);
-                        //equipe.setPontos();
+                        equipe.setPontuacao(18);
+                        equipe.setPontosCorrida(18);
+                        linha[3] = "18";
                         break;
                     case 3:
-                        carro.setPontosCorrida(15);
                         carro.setPontuacao(15);
-                        //equipe.setPontos();
+                        equipe.setPontuacao(15);
+                        equipe.setPontosCorrida(15);
+                        linha[3] = "15";
                         break;
                     case 4:
-                        carro.setPontosCorrida(12);
                         carro.setPontuacao(12);
-                        //equipe.setPontos();
+                        equipe.setPontuacao(12);
+                        equipe.setPontosCorrida(12);
+                        linha[3] = "12";
                         break;
                     case 5:
-                        carro.setPontosCorrida(10);
                         carro.setPontuacao(10);
-                        //equipe.setPontos();
+                        equipe.setPontuacao(10);
+                        equipe.setPontosCorrida(10);
+                        linha[3] = "10";
                         break;
                     case 6:
-                        carro.setPontosCorrida(8);
                         carro.setPontuacao(8);
-                        //equipe.setPontos();
+                        equipe.setPontuacao(8);
+                        equipe.setPontosCorrida(8);
+                        linha[3] = "8";
                         break;
                     case 7:
-                        carro.setPontosCorrida(6);
                         carro.setPontuacao(6);
-                        //equipe.setPontos();
+                        equipe.setPontuacao(6);
+                        equipe.setPontosCorrida(6);
+                        linha[3] = "6";
                         break;
                     case 8:
-                        carro.setPontosCorrida(4);
                         carro.setPontuacao(4);
-                        //equipe.setPontos();
+                        equipe.setPontuacao(4);
+                        equipe.setPontosCorrida(4);
+                        linha[3] = "4";
                         break;
                     case 9:
-                        carro.setPontosCorrida(2);
                         carro.setPontuacao(2);
-                        //equipe.setPontos();
+                        equipe.setPontuacao(2);
+                        equipe.setPontosCorrida(2);
+                        linha[3] = "2";
                         break;
                     case 10:
-                        carro.setPontosCorrida(1);
                         carro.setPontuacao(1);
-                        //equipe.setPontos();
+                        equipe.setPontuacao(1);
+                        equipe.setPontosCorrida(1);
+                        linha[3] = "1";
                         break;
                 }
+
+                tabela.add(linha); 
                 posicao++;
         }
         return tabela;

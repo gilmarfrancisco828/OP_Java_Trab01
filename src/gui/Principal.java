@@ -159,22 +159,21 @@ public class Principal extends javax.swing.JFrame {
         Principal p = new Principal();
         p.setVisible(true);
 
-        ArrayList<Carro> classificacao = new ArrayList<Carro>();
+        ArrayList<Carro> classificacao = new ArrayList<>();
         int cont = 0;
         int num = 1;
-        
+
         int contClima = 0; //Contador para limitar mudança de tempo
         int tempoChuva = 0; // Variável para marcar quantas iterações a chuva vai durar
-        
+
         for (Corrida corrida : p.c.getCorridas()) {
             boolean corrida_terminou = false;
             Controlador_TelaCorrida.setTituloCorrida(num++, corrida, p.tituloCorrida);
-            
+
             contClima = 0;
             tempoChuva = 0;
-            
-            // Atualiza a tabela na tela-
 
+            // Atualiza a tabela na tela-
             ArrayList<Carro> carros = corrida.geraPosicoes(Equipe.getCarros(
                     p.c.getEquipes()
             )
@@ -230,6 +229,10 @@ public class Principal extends javax.swing.JFrame {
                                 carro.setDistancia(0.0f);//Se o carro terminou a corrida, ele deve estar parado na linha de chegada
                                 carro.setEstado(Carro.Estados.CORRIDA_FINALIZADA);
                                 finalizados.add(carro);
+                                if (cont < 10) {
+                                    classificacao.add(carro);
+                                    cont++;
+                                }
 
                             } else { // Correndo normal
                                 carro.incrementeVoltas();
@@ -270,11 +273,11 @@ public class Principal extends javax.swing.JFrame {
                         //VERIFICAR TROCAR PNEU
                     }
                 }
-                
-                if(contClima == 1){ // Controlar o tempo da chuva
-                    tempoChuva ++;
+
+                if (contClima == 1) { // Controlar o tempo da chuva
+                    tempoChuva++;
                 }
-                
+
                 if (corrida.calculaChuva() && contClima < 2) {
                     if (corrida.ensolarado()) {
                         p.chamaAlteraJLabel2("Chuvoso"); //atualiza interface para Chuvoso
@@ -282,13 +285,13 @@ public class Principal extends javax.swing.JFrame {
                         for (Carro carro : carros) {
                             carro.setDesempenho(.8f);
                         }
-                        contClima ++;
+                        contClima++;
                     }
 
                     //atualiza estatisticas de corrida
                     //atualiza velocidade dos carros
                     //troca pneu
-                } else if (contClima < 2 && tempoChuva > 5){
+                } else if (contClima < 2 && tempoChuva > 5) {
                     if (corrida.chovendo()) {
                         p.chamaAlteraJLabel2("Ensolarado");
                         corrida.setClimaSol();
@@ -303,12 +306,8 @@ public class Principal extends javax.swing.JFrame {
                 cp = new Carro.ComparadorPosicaoCarro();
                 carros.sort(cp);
 
-                classificacao = new ArrayList<Carro>();
-                classificacao.addAll(finalizados);
-                classificacao.addAll(carros);
-
-                for (int i = 0; i < classificacao.size(); i++) {
-                    classificacao.get(i).setPosicao(i + 1);
+                for (int i = 0; i < finalizados.size(); i++) {
+                    finalizados.get(i).setPosicao(i + 1);
                 }
 
                 //AQUI ROLAM TODAS AS PARADA INSANAS
@@ -318,22 +317,28 @@ public class Principal extends javax.swing.JFrame {
                 // Atualiza a tabela na tela-
                 Controlador_TelaCorrida.atualizarTelaCorrida(p.jTable1, p.c,
                         corrida, Equipe.getCarros(p.c.getEquipes()));
-            }
 
+            }
+            //Corrida terminou, voltar todos os carros pro estado de esperando largada
+            for (Carro carro : Equipe.getCarros(p.c.getEquipes())) {
+                carro.setEstado(Carro.Estados.AGUARDANDO_LARGADA);
+                carro.setDistancia(0);
+            }
+            
+            ClassificacaoCorrida classific = new ClassificacaoCorrida(classificacao, p.c.getEquipes(), corrida);
+            classific.setVisible(true);
+            TimeUnit.SECONDS.sleep(10);
+            classific.setVisible(false);
+            classificacao = new ArrayList<>();
+            cont = 0;
         }
 //            TODO: Exibir tela de pontuação da corida
 //            TimeUnit.SECONDS.sleep(8 + Delays.TROCA_CORRIDA.getV());
 
-        //Corrida terminou, voltar todos os carros pro estado de esperando largada
-        for (Carro carro : Equipe.getCarros(p.c.getEquipes())) {
-            carro.setEstado(Carro.Estados.AGUARDANDO_LARGADA);
-            carro.setDistancia(0);
-        }
-
-        ClassificacaoCorrida classific = new ClassificacaoCorrida(classificacao);
-        classific.setVisible(true);
+        ClassificacaoCampeonato classificCamp = new ClassificacaoCampeonato(p.c.getEquipes());
+        classificCamp.setVisible(true);
         TimeUnit.SECONDS.sleep(10);
-        classific.setVisible(false);
+        classificCamp.setVisible(false);
     }
 
     private static void alteraJLabel2(String str, javax.swing.JLabel label) {
