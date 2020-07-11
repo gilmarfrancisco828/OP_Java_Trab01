@@ -19,13 +19,13 @@ public class Equipe {
     private int pontosCorrida;
     private Carro[] carro;
 
-    public Equipe(String nome) {
+    public Equipe(String nome, String p1, String p2) {
         this.nome = nome;
         this.pontuacao = 0;
         this.pontosCorrida = 0;
         carro = new Carro[2];
-        carro[0] = Controlador_Carro.criarCarro(this);
-        carro[1] = Controlador_Carro.criarCarro(this);
+        carro[0] = Controlador_Carro.criarCarro(p1, this);
+        carro[1] = Controlador_Carro.criarCarro(p2, this);
     }
 
     public String getNome() {
@@ -41,7 +41,7 @@ public class Equipe {
     }
 
     public void setPontuacao(int pontuacao) {
-        this.pontuacao = pontuacao;
+        this.pontuacao += pontuacao;
     }
 
     public int getPontosCorrida() {

@@ -15,6 +15,7 @@ import java_projeto.Corrida;
 import java_projeto.Equipe;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -81,14 +82,15 @@ public class Principal extends javax.swing.JFrame {
                 {"Combustível", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
             },
             new String [] {
-                "", "Carro 1", "Carro 2", "Carro 3", "Carro 4", "Carro 5", "Carro 6", "Carro 7", "Carro 8", "Carro 9", "Carro 10", "Carro 11", "Carro 12", "Carro 13", "Carro 14", "Carro 15", "Carro 16", "Carro 17", "Carro 18", "Carro 19", "Carro 20"
+                "Piloto:", "Carro 1", "Carro 2", "Carro 3", "Carro 4", "Carro 5", "Carro 6", "Carro 7", "Carro 8", "Carro 9", "Carro 10", "Carro 11", "Carro 12", "Carro 13", "Carro 14", "Carro 15", "Carro 16", "Carro 17", "Carro 18", "Carro 19", "Carro 20"
             }
         ));
+        jTable1.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jTable1.setFillsViewportHeight(true);
+        jTable1.setName(""); // NOI18N
+        jTable1.setOpaque(false);
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-        }
 
         jButton1.setText("Run");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -107,29 +109,34 @@ public class Principal extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(539, 539, 539))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1725, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 88, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(tituloCorrida, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabelEstadoPista, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(791, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabelEstadoPista, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(tituloCorrida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelEstadoPista, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelEstadoPista)
+                    .addComponent(tituloCorrida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(19, 19, 19)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(28, 28, 28)
+                .addGap(163, 163, 163)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
+                .addContainerGap(156, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -304,27 +311,34 @@ public class Principal extends javax.swing.JFrame {
 
                 Carro.ComparadorPosicaoCarro cp = null;
                 cp = new Carro.ComparadorPosicaoCarro();
-                carros.sort(cp);
-
-                for (int i = 0; i < finalizados.size(); i++) {
+                correndo.sort(cp);
+                int i = 0;
+                for (; i < finalizados.size(); i++) {
                     finalizados.get(i).setPosicao(i + 1);
                 }
-
+                for (Carro carro : correndo) {
+                    carro.setPosicao(i + 1);
+                    i++;
+                }
+                ArrayList<Carro> posicoes = new ArrayList<>();
+                posicoes.addAll(finalizados);
+                posicoes.addAll(correndo);
                 //AQUI ROLAM TODAS AS PARADA INSANAS
                 //VERIFICAR MUDANCA DE CLIMA
                 //VERICIAR ACIDENTE
                 TimeUnit.MILLISECONDS.sleep(5 * Delays.TEMPO_CORRER.getV());
                 // Atualiza a tabela na tela-
                 Controlador_TelaCorrida.atualizarTelaCorrida(p.jTable1, p.c,
-                        corrida, Equipe.getCarros(p.c.getEquipes()));
-
+                        corrida, posicoes);
             }
             //Corrida terminou, voltar todos os carros pro estado de esperando largada
             for (Carro carro : Equipe.getCarros(p.c.getEquipes())) {
                 carro.setEstado(Carro.Estados.AGUARDANDO_LARGADA);
                 carro.setDistancia(0);
+                carro.setVolta(0);
+                carro.setCombustivel(100.0f);
             }
-            
+
             ClassificacaoCorrida classific = new ClassificacaoCorrida(classificacao, p.c.getEquipes(), corrida);
             classific.setVisible(true);
             TimeUnit.SECONDS.sleep(10);

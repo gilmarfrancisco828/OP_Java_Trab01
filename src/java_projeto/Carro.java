@@ -116,7 +116,7 @@ public class Carro  {
         Random r = new Random();
         float value = r.nextFloat()*5;
         
-        System.out.println("Distância aleatória: "+value);
+//        System.out.println("Distância aleatória: "+value);
         this.distancia += value;
         this.decrementaCombustivel(value);
         

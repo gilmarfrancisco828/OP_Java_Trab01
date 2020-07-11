@@ -24,7 +24,7 @@ public class Controlador_TelaClassificacaoCampeonatoEquipes {
         ArrayList<Equipe> lista = new ArrayList<Equipe>(equipes);
         lista.sort(Comparator.comparing(Equipe::getPontuacao));
         for (Equipe eq : lista) {
-            System.out.println("#eq " + eq.getNome());
+//            System.out.println("#eq " + eq.getNome());
         }
 
         int tam = lista.size() - 1;

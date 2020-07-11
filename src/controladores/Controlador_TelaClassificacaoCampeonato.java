@@ -30,7 +30,7 @@ public class Controlador_TelaClassificacaoCampeonato {
         ArrayList<Carro> lista = new ArrayList<Carro>(carrosClassificados);
         lista.sort(Comparator.comparing(Carro::getPontuacao));
         for (Carro c : lista) {
-            System.out.println("#carro " + c.getId());
+//            System.out.println("#carro " + c.getId());
         }
 
         int tam = lista.size() - 1;
@@ -38,13 +38,7 @@ public class Controlador_TelaClassificacaoCampeonato {
         Equipe eq = null;
         while (tam >= 0) {
             c = lista.remove(tam);
-            for (Equipe e : equipes) {
-                for (int i = 0; i < 2; i++) {
-                    if (c.getId() == e.getCarro(i).getId()) {
-                        eq = e;
-                    }
-                }
-            }
+            eq = c.getEquipe();
             
             String[] linha = new String[4];
             linha[0] = posicao + "º";

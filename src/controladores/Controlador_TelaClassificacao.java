@@ -27,13 +27,7 @@ public class Controlador_TelaClassificacao {
         int posicao = 1;
         Equipe equipe = null;
         for (Carro carro : carros) {
-                for(Equipe e : equipes){
-                    for(int i = 0; i < 2; i++){
-                        if(carro.getId() == e.getCarro(i).getId()){
-                            equipe = e;
-                        }
-                    }
-                }
+                equipe = carro.getEquipe();
                 String[] linha = new String[4];
                 linha[0] = posicao + "º";
                 linha[1] = carro.getPiloto();

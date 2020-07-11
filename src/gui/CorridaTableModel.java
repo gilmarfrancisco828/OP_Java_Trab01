@@ -6,37 +6,41 @@
 package gui;
 
 import java.util.ArrayList;
+import java_projeto.Carro;
 import javax.swing.table.AbstractTableModel;
 
 /**
  *
  * @author Parafuso de Oliveira
  */
-public class CorridaTableModel extends AbstractTableModel{
-    private ArrayList<String []> tabela;
-     private String[] colunas;
+public class CorridaTableModel extends AbstractTableModel {
 
-    public CorridaTableModel(ArrayList<String []> tabela) {
+    private ArrayList<String[]> tabela;
+    private String[] colunas;
+
+    public CorridaTableModel(ArrayList<Carro> carros, ArrayList<String[]> tabela) {
         this.colunas = new String[21];
         this.colunas[0] = " ";
         this.tabela = tabela;
-        for (int i = 1; i <= 20; i++) {
-            this.colunas[i] = "Carro " + i;
+        int i = 1;
+        for (Carro carro : carros) {
+            this.colunas[i++] = carro.getPiloto();
         }
-        
+
     }
-    
-    
+
+
     @Override
     public int getRowCount() {
-        return tabela.size();
+        return 4;
+//        return tabela.size();;
     }
-    
+
     @Override
     public String getColumnName(int column) {
         return colunas[column];
     }
-    
+
     @Override
     public int getColumnCount() {
         return colunas.length;

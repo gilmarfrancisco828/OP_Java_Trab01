@@ -139,13 +139,16 @@ public class Corrida {
         cc = new Carro.ComparadorCarro();
         carros.sort(cc);
         ArrayList<Carro> acidentados = new ArrayList<>();
-        float probabilidade = .01f;
+        float probabilidade = .001f;
 
         for (Carro c : carros) {
             for (int i = 0; i < carros.size(); i++) {
                 if (c.getId() != carros.get(i).getId()) {
-                    if (c.getDistancia() == carros.get(i).getDistancia()) {
+                    float d1 = c.getDistancia();
+                    float d2 = carros.get(i).getDistancia();
+                    if (d1 >= d2-.005f && d1<= d2+.005f) {
                         if (ocorreuAcidente(clima, probabilidade)) {
+                            System.out.println("Acidente!");
                             if (!acidentados.contains(c)) {
                                 acidentados.add(c);
                             }
@@ -158,7 +161,7 @@ public class Corrida {
             }
         }
         for (Carro c : acidentados) {
-            System.out.println("Acidentado: " + c.getId());
+//            System.out.println("Acidentado: " + c.getId());
         }
 
         return acidentados;
@@ -171,12 +174,14 @@ public class Corrida {
         if (clima == Clima.CHUVA) {
             prob += .09;
             if (value < prob) {
+                System.out.println(value);
                 return true;
             }
             return false;
         }
 
         if (value < prob) {
+            System.out.println(value);
             return true;
         }
         return false;

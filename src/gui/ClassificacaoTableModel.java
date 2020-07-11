@@ -8,12 +8,12 @@ package gui;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
+public class ClassificacaoTableModel extends AbstractTableModel {
 
-public class ClassificacaoTableModel extends AbstractTableModel{
-    private ArrayList<String []> tabela;
-     private String[] colunas;
+    private ArrayList<String[]> tabela;
+    private String[] colunas;
 
-    public ClassificacaoTableModel(ArrayList<String []> tabela) {
+    public ClassificacaoTableModel(ArrayList<String[]> tabela) {
         this.tabela = tabela;
         this.colunas = new String[4];
         this.colunas[0] = "Posição";
@@ -21,18 +21,17 @@ public class ClassificacaoTableModel extends AbstractTableModel{
         this.colunas[2] = "Equipe";
         this.colunas[3] = "Pontos";
     }
-    
-    
+
     @Override
     public int getRowCount() {
         return tabela.size();
     }
-    
+
     @Override
     public String getColumnName(int column) {
         return colunas[column];
     }
-    
+
     @Override
     public int getColumnCount() {
         return colunas.length;
@@ -41,5 +40,10 @@ public class ClassificacaoTableModel extends AbstractTableModel{
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return tabela.get(rowIndex)[columnIndex];
+    }
+
+    @Override
+    public void setValueAt(Object object, int row, int col) {
+        super.setValueAt(object, row, col);
     }
 }

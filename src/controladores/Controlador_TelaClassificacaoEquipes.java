@@ -36,7 +36,7 @@ public class Controlador_TelaClassificacaoEquipes {
         ArrayList<Equipe> lista = new ArrayList<Equipe>(equipesClassificadas);
         lista.sort(Comparator.comparing(Equipe::getPontosCorrida));
         for(Equipe eq : lista){
-            System.out.println("#eq "+eq.getNome());
+//            System.out.println("#eq "+eq.getNome());
         }
         
         int tam = lista.size() - 1;
