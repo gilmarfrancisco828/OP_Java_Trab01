@@ -51,6 +51,15 @@ public class Carro  {
     private Equipe equipe;
     private int posicao;
     private static float probabilidadeFurarPneu = 0.01f;
+    private int habilidadePiloto;
+
+    public void setHabilidadePiloto(int habilidadePiloto) {
+        this.habilidadePiloto = habilidadePiloto;
+    }
+
+    public int getHabilidadePiloto() {
+        return habilidadePiloto;
+    }
  
 
     
@@ -66,7 +75,7 @@ public class Carro  {
         CORRIDA_FINALIZADA
     }
 
-    public Carro(int id, String piloto, Equipe e) {
+    public Carro(int id, String piloto, Equipe e, int habilidade) {
         this.id = id;
         this.volta = 0;
         this.distancia = 0;
@@ -78,6 +87,7 @@ public class Carro  {
         this.pontosCorrida = 0;
         this.pontuacao = 0;
         this.equipe = e;
+        this.habilidadePiloto = habilidade;
     }
 
     public Equipe getEquipe(){
@@ -114,7 +124,8 @@ public class Carro  {
         // Incrementar aqui para depois srr aleatório
         //this.distancia++;
         Random r = new Random();
-        float value = r.nextFloat()*5*this.getDesempenho();
+        float value = r.nextFloat()*5*this.getDesempenho() + 
+                this.getHabilidadePiloto();
         
 //        System.out.println("Distância aleatória: "+value);
         this.distancia += value;
@@ -166,7 +177,7 @@ public class Carro  {
     
     public void decrementaCombustivel(float dec){
         
-        float percent = dec/120f;
+        float percent = dec/120f * (32);
         
         this.combustivel -= percent;
         
@@ -230,21 +241,23 @@ public class Carro  {
     }
     
     public boolean calculaAbastecer(float tamanhoPista, int totalVoltas){
-        double kmRestantes = this.calculaQuantosKmPodeCorrer();
-        double kmAPercorrer = (tamanhoPista  - this.distancia);
+        double movimentosRestantes = this.calculaQuantosKmPodeCorrer();
+//        double movimentosAPercorrer = (tamanhoPista  - this.distancia)/8;
+//        if(movimentosRestantes < movimentosAPercorrer){
+//            return true;
+//        }
+//        return false;
         
-        if(kmRestantes < kmAPercorrer){
+        
+        if(movimentosRestantes <= 0){
             return true;
-        }
-        return false;
-        
-        
-        
+        }return false;
         
     }
     
     private double calculaQuantosKmPodeCorrer(){
-        return (this.combustivel * 156) * .01;
+//        return (this.combustivel * 156) * .01;
+          return (this.combustivel - (8/120 * 32));
 //        156km --> desempenho do carro com um taque de 120L
     }
     
