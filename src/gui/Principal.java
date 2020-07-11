@@ -13,6 +13,7 @@ import java_projeto.Campeonato;
 import java_projeto.Carro;
 import java_projeto.Corrida;
 import java_projeto.Equipe;
+import javax.swing.JOptionPane;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableColumn;
@@ -25,6 +26,17 @@ public class Principal extends javax.swing.JFrame {
 
     private Campeonato c;
     private ArrayList<String[]> tabela = new ArrayList<>();
+    
+    private static int velocidadeExe; //Velocidade de execução da simulação
+    
+    public int getSpinnerVelocidade(){
+        int aux = (int)spinnerVelocidade.getValue();
+        return aux;
+    }
+    
+    public void setSpinnerVelocidade(int vel){
+        spinnerVelocidade.setValue(vel);
+    }
 
     /**
      * Creates new form Principal
@@ -71,6 +83,8 @@ public class Principal extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         tituloCorrida = new javax.swing.JLabel();
         jLabelEstadoPista = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        spinnerVelocidade = new javax.swing.JSpinner();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -105,25 +119,36 @@ public class Principal extends javax.swing.JFrame {
         jLabelEstadoPista.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabelEstadoPista.setText("Tempo: Ensolarado");
 
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setText("Velocidade da Simulação:");
+
+        spinnerVelocidade.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(539, 539, 539))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1725, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 88, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1725, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 88, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(tituloCorrida, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabelEstadoPista, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(tituloCorrida, javax.swing.GroupLayout.PREFERRED_SIZE, 477, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabelEstadoPista, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(11, 11, 11)
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(spinnerVelocidade, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(425, 425, 425)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -134,9 +159,12 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(tituloCorrida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(19, 19, 19)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(163, 163, 163)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(156, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 127, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(spinnerVelocidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(27, 27, 27))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -149,7 +177,9 @@ public class Principal extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -164,6 +194,7 @@ public class Principal extends javax.swing.JFrame {
      */
     public static void main(String args[]) throws InterruptedException {
         Principal p = new Principal();
+        p.setSpinnerVelocidade(1);
         p.setVisible(true);
 
         ArrayList<Carro> classificacao = new ArrayList<>();
@@ -172,6 +203,8 @@ public class Principal extends javax.swing.JFrame {
 
         int contClima = 0; //Contador para limitar mudança de tempo
         int tempoChuva = 0; // Variável para marcar quantas iterações a chuva vai durar
+        
+        
 
         for (Corrida corrida : p.c.getCorridas()) {
             boolean corrida_terminou = false;
@@ -204,8 +237,12 @@ public class Principal extends javax.swing.JFrame {
             // LOOP GERAL DE MOVIMENTAÇÃO DA CORRIDA
 //            Armazena os carros que finalizaram a corrida
             ArrayList<Carro> finalizados = new ArrayList<Carro>();
-
+            
             while (!corrida_terminou) {
+                
+                velocidadeExe = p.getSpinnerVelocidade();
+                
+                
                 corrida_terminou = true;
                 //Representa cada instante da corrida
                 ArrayList<Carro> correndo = new ArrayList<Carro>();
@@ -213,7 +250,7 @@ public class Principal extends javax.swing.JFrame {
                 for (Carro carro : carros) {
 
                     if (carro.getEstado() == Carro.Estados.TROCANDO_PNEU) {
-                        carro.decrementaTempoParado((int) Delays.TEMPO_CORRER.getV()); //decrementa o tempo de espera
+                        carro.decrementaTempoParado(((int) Delays.TEMPO_CORRER.getV())/(velocidadeExe)); //decrementa o tempo de espera
                         if (carro.getTempoParado() <= 0) {
                             carro.setEstado(Carro.Estados.CORRENDO);
                             carro.setTempoParado(0);
@@ -221,7 +258,7 @@ public class Principal extends javax.swing.JFrame {
                         //carro.setEstado(Carro.Estados.TROCANDO_PNEU);
                     }
                     if (carro.getEstado() == Carro.Estados.ABASTECENDO) {
-                        carro.decrementaTempoParado((int) Delays.TEMPO_CORRER.getV());//decrementa o tempo de espera
+                        carro.decrementaTempoParado(((int) Delays.TEMPO_CORRER.getV())/(velocidadeExe));//decrementa o tempo de espera
                         if (carro.getTempoParado() <= 0) {
                             carro.setEstado(Carro.Estados.CORRENDO);
                             carro.setTempoParado(0);
@@ -252,7 +289,7 @@ public class Principal extends javax.swing.JFrame {
                             if (carro.calculaAbastecer(distancia_pista, corrida.getNumero_voltas())) {
                                 carro.abasteceCarro(); //abastece o carro
                                 carro.setEstado(Carro.Estados.ABASTECENDO);
-                                carro.setTempoParado((int) Delays.TEMPO_ABASTECER.getV());
+                                carro.setTempoParado(((int) Delays.TEMPO_ABASTECER.getV())/(velocidadeExe));
                             }
                             ArrayList<Carro> acidentados = corrida.verificaColisao(
                                     corrida.getClima(), p.c.getEquipes()
@@ -270,7 +307,7 @@ public class Principal extends javax.swing.JFrame {
 
                             if (carro.furaPneu()) {
                                 carro.setEstado(Carro.Estados.PNEU_FURADO);
-                                carro.setTempoParado((int) Delays.TEMPO_TROCAR_PNEU.getV());
+                                carro.setTempoParado(((int) Delays.TEMPO_TROCAR_PNEU.getV())/(velocidadeExe));
                             }
                             correndo.add(carro);
                         }
@@ -326,12 +363,15 @@ public class Principal extends javax.swing.JFrame {
                 //AQUI ROLAM TODAS AS PARADA INSANAS
                 //VERIFICAR MUDANCA DE CLIMA
                 //VERICIAR ACIDENTE
-                TimeUnit.MILLISECONDS.sleep(5 * Delays.TEMPO_CORRER.getV());
+                TimeUnit.MILLISECONDS.sleep(5 * (Delays.TEMPO_CORRER.getV())/(velocidadeExe));
                 // Atualiza a tabela na tela-
                 Controlador_TelaCorrida.atualizarTelaCorrida(p.jTable1, p.c,
                         corrida, posicoes);
             }
             //Corrida terminou, voltar todos os carros pro estado de esperando largada
+            
+            p.setSpinnerVelocidade(1);
+            
             for (Carro carro : Equipe.getCarros(p.c.getEquipes())) {
                 carro.setEstado(Carro.Estados.AGUARDANDO_LARGADA);
                 carro.setDistancia(0);
@@ -369,10 +409,12 @@ public class Principal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelEstadoPista;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
+    private javax.swing.JSpinner spinnerVelocidade;
     private javax.swing.JLabel tituloCorrida;
     // End of variables declaration//GEN-END:variables
 }
