@@ -15,24 +15,24 @@ import java_projeto.Equipe;
  */
 public class Controlador_Equipe {
     
-    public static Equipe criarEquipe(String nome, String p1, String p2, 
-            int habilidade){
-        Equipe equipe = new Equipe(nome, p1, p2, habilidade);
-        return equipe;
-    }
+//    public static Equipe criarEquipe(String nome, String p1, String p2, 
+//            int habilidade, int ph1, int ph2){
+//        Equipe equipe = new Equipe(nome, p1, p2, habilidade);
+//        return equipe;
+//    }
     
     public static ArrayList<Equipe> gerarEquipes(){
         ArrayList<Equipe> equipes = new ArrayList<>();
-        equipes.add(new Equipe("Mercedes", "V. Bottas", "L. Hamilton", -1));
-        equipes.add(new Equipe("Ferrari", "C. Leclerc", "S. Vettel", -1));
-        equipes.add(new Equipe("McLaren", "L. Norris", "C. Sainz Jr.", -1));
-        equipes.add(new Equipe("Racing Point", "S. Perez", "L. Stroll", 0));
-        equipes.add(new Equipe("AlphaTauri", "P. Gasly", "D. Kvyat", 0));
-        equipes.add(new Equipe("Alfa Romeo", "A. Giovinazzi", "K. Raikkonen", 0));
-        equipes.add(new Equipe("Renault", "D. Ricciardo", "E. Ocon", 0));
-        equipes.add(new Equipe("Williams", "N. Latifi", "G. Russell", 1));
-        equipes.add(new Equipe("Red Bull", "M. Verstappen", "A. Albon", 1));
-        equipes.add(new Equipe("Haas", "R. Grosjean", "K. Magnussen", 1));
+        equipes.add(new Equipe("Mercedes", "V. Bottas", "L. Hamilton", -1, 3, 3));
+        equipes.add(new Equipe("Ferrari", "C. Leclerc", "S. Vettel", -1, 3, 3));
+        equipes.add(new Equipe("McLaren", "L. Norris", "C. Sainz Jr.", -1 , 2, 2));
+        equipes.add(new Equipe("Racing Point", "S. Perez", "L. Stroll", 0, 2, 1));
+        equipes.add(new Equipe("AlphaTauri", "P. Gasly", "D. Kvyat", 0, 2, 0));
+        equipes.add(new Equipe("Alfa Romeo", "A. Giovinazzi", "K. Raikkonen", 0 , 1, 1));
+        equipes.add(new Equipe("Renault", "D. Ricciardo", "E. Ocon", 0, 2, 0));
+        equipes.add(new Equipe("Williams", "N. Latifi", "G. Russell", 1 , 0, 0));
+        equipes.add(new Equipe("Red Bull", "M. Verstappen", "A. Albon", 1, 3, 2));
+        equipes.add(new Equipe("Haas", "R. Grosjean", "K. Magnussen", 1 , 0, 1));
         return equipes;
     }
     
