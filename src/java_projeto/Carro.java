@@ -73,7 +73,7 @@ public class Carro  {
         this.combustivel = 100;
         this.estado = Estados.AGUARDANDO_LARGADA;
         this.tempoParado = 0;
-        this.desempenho = 1;
+        this.desempenho = 1f;
         this.piloto = piloto;
         this.pontosCorrida = 0;
         this.pontuacao = 0;
@@ -114,7 +114,7 @@ public class Carro  {
         // Incrementar aqui para depois srr aleatório
         //this.distancia++;
         Random r = new Random();
-        float value = r.nextFloat()*5;
+        float value = r.nextFloat()*5*this.getDesempenho();
         
 //        System.out.println("Distância aleatória: "+value);
         this.distancia += value;
@@ -137,11 +137,15 @@ public class Carro  {
     }
 
     public void setTempoParado(int tempoParado) {
-        this.tempoParado = tempoParado;
+        if(Carro.Estados.TROCANDO_PNEU == this.getEstado())
+            this.tempoParado = tempoParado   + 10*this.equipe.getHabilidadeMecanicos();
+        else
+            this.tempoParado = tempoParado;
+        
     }
     
     public void decrementaTempoParado(int tempo){
-        this.tempoParado = this.tempoParado - tempo;
+            this.tempoParado = this.tempoParado - tempo;
     }
 
     public float getCombustivel() {

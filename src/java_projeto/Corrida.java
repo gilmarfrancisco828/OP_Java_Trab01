@@ -172,7 +172,7 @@ public class Corrida {
         float value = (r.nextInt(101)+1) * .01f;
 
         if (clima == Clima.CHUVA) {
-            prob += .09;
+            prob += prob*.22;
             if (value < prob) {
                 System.out.println(value);
                 return true;

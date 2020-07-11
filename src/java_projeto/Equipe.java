@@ -18,14 +18,20 @@ public class Equipe {
     private int pontuacao;
     private int pontosCorrida;
     private Carro[] carro;
+    private int habilidadeMecanicos;
 
-    public Equipe(String nome, String p1, String p2) {
+    public Equipe(String nome, String p1, String p2, int habilidade) {
         this.nome = nome;
         this.pontuacao = 0;
         this.pontosCorrida = 0;
         carro = new Carro[2];
         carro[0] = Controlador_Carro.criarCarro(p1, this);
         carro[1] = Controlador_Carro.criarCarro(p2, this);
+        habilidadeMecanicos = habilidade;
+    }
+
+    public int getHabilidadeMecanicos() {
+        return habilidadeMecanicos;
     }
 
     public String getNome() {
