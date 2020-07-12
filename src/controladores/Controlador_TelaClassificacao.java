@@ -18,7 +18,7 @@ import javax.swing.JLabel;
 public class Controlador_TelaClassificacao {
 
     public static void setTituloClassificaoCorrida(Corrida c, JLabel titulo) {
-        titulo.setText("Classificação: Grande Prêmio de " + c.getCidade());
+        titulo.setText("Classificação: " + c.getCidade());
     }
     
     public static ArrayList<String[]> getTabelaClassificacao(ArrayList<Carro> carros, ArrayList<Equipe> equipes) {

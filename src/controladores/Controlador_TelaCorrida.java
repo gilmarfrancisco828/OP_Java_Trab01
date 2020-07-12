@@ -36,11 +36,20 @@ public class Controlador_TelaCorrida {
         int j = 1;
 
         for (Carro carro : carros) {
-            linha[j++] = carro.getPosicao() + "(" + carro.getVolta() + ")";
+            linha[j++] = carro.getPosicao() + "º"; 
         }
 
         tabela.add(linha);
 
+        linha = new String[21];
+        linha[0] = "Volta";
+        j = 1;
+
+        for (Carro carro : carros) {
+            linha[j++] =  carro.getVolta() + "/" + corrida.getNumero_voltas();
+        }
+        tabela.add(linha);
+        
         linha = new String[21];
         linha[0] = "Estado";
         j = 1;
@@ -78,7 +87,7 @@ public class Controlador_TelaCorrida {
 //        t.setModel(new CorridaTableModel(carros, ));
         TableColumnModel col = t.getColumnModel();
         JTableHeader header= t.getTableHeader();
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 5; i++) {
             for (int j = 1; j < 21; j++) {
                  col.getColumn(j).setHeaderValue(carros.get(j-1).getPiloto());
                 t.setValueAt(tabela.get(i)[j], i, j);

@@ -11,34 +11,36 @@ import java.util.ArrayList;
 import java_projeto.Carro;
 import java_projeto.Corrida;
 import java_projeto.Equipe;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 
 /**
  *
  * @author Jediael
  */
-public class ClassificacaoCorrida extends javax.swing.JFrame {
+public class ClassificacaoCorrida extends javax.swing.JDialog {
 
     /**
-     * Creates new form ClassificacaoCorrida
+     * Creates new form TesteDialog
      */
     static ArrayList<Carro> classificacao = new ArrayList<>();
     static ArrayList<Equipe> equipes = new ArrayList<>();
     private ArrayList<String[]> tabela = new ArrayList<>();
     private ArrayList<String[]> tabela2 = new ArrayList<>();
-    
-    public ClassificacaoCorrida(ArrayList<Carro> classificacao, ArrayList<Equipe> equipes, Corrida corrida) {
+
+    public ClassificacaoCorrida(java.awt.Frame parent, boolean modal, ArrayList<Carro> classificacao, ArrayList<Equipe> equipes, Corrida corrida) {
+        super(parent, modal);
         initComponents();
         Controlador_TelaClassificacao.setTituloClassificaoCorrida(corrida, jLabelTitulo);
-        
+
         tabela = Controlador_TelaClassificacao.getTabelaClassificacao(classificacao, equipes);
         jTablePilotos.setModel(new ClassificacaoTableModel(tabela));
         jTablePilotos.getModel();
-        
+
         tabela2 = Controlador_TelaClassificacaoEquipes.getTabelaClassificacao(classificacao, equipes);
         jTableEquipes.setModel(new ClassificacaoEquipesTableModel(tabela2));
         jTableEquipes.getModel();
+
+        this.setLocationRelativeTo(null);
+        this.setVisible(true);
 
     }
 
@@ -60,9 +62,9 @@ public class ClassificacaoCorrida extends javax.swing.JFrame {
         jTableEquipes = new javax.swing.JTable();
         jLabelTitulo = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        jTablePilotos.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTablePilotos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -87,9 +89,9 @@ public class ClassificacaoCorrida extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(62, 62, 62)
+                .addGap(114, 114, 114)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addContainerGap(143, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -101,6 +103,7 @@ public class ClassificacaoCorrida extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Pilotos", jPanel1);
 
+        jTableEquipes.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTableEquipes.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
@@ -125,9 +128,9 @@ public class ClassificacaoCorrida extends javax.swing.JFrame {
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(60, 60, 60)
+                .addGap(109, 109, 109)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 416, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(74, Short.MAX_VALUE))
+                .addContainerGap(148, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,31 +143,41 @@ public class ClassificacaoCorrida extends javax.swing.JFrame {
         jTabbedPane1.addTab("Equipes", jPanel2);
 
         jLabelTitulo.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabelTitulo.setText("Classificação");
+        jLabelTitulo.setText("Classificação Dialog");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(56, 56, 56)
+                .addGap(91, 91, 91)
                 .addComponent(jLabelTitulo)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(433, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(jTabbedPane1)
+                    .addContainerGap()))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(48, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(31, 31, 31)
                 .addComponent(jLabelTitulo)
-                .addGap(18, 18, 18)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(380, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(70, 70, 70)
+                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(61, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
+    /**
+     * @param args the command line arguments
+     */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabelTitulo;

@@ -45,10 +45,10 @@ public class Principal extends javax.swing.JFrame {
      * Creates new form Principal
      */
     public Principal() {
+        
         initComponents();
         c = Controlador_Campeonato.criarCampeonato("Grande Prêmio das Lolis");
         Controlador_Campeonato.iniciaCampeonato(c);
-
         jTable1.getTableHeader().setReorderingAllowed(false);
         jTable1.getModel().addTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent e) {
@@ -87,9 +87,9 @@ public class Principal extends javax.swing.JFrame {
                 g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
             }
         };
+
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
         tituloCorrida = new javax.swing.JLabel();
         jLabelEstadoPista = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
@@ -101,9 +101,11 @@ public class Principal extends javax.swing.JFrame {
         jDesktopPane1.setBackground(new java.awt.Color(204, 204, 255));
         jDesktopPane1.setPreferredSize(new java.awt.Dimension(1920, 1080));
 
+        jTable1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"Posição", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {"Volta", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
                 {"Estado", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
                 {"Equipe", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null},
                 {"Combustível", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null}
@@ -118,14 +120,29 @@ public class Principal extends javax.swing.JFrame {
         jTable1.setOpaque(false);
         jTable1.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(jTable1);
-
-        jButton1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jButton1.setText("Começar simulação");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        if (jTable1.getColumnModel().getColumnCount() > 0) {
+            jTable1.getColumnModel().getColumn(0).setHeaderValue("Piloto:");
+            jTable1.getColumnModel().getColumn(1).setHeaderValue("Carro 1");
+            jTable1.getColumnModel().getColumn(2).setHeaderValue("Carro 2");
+            jTable1.getColumnModel().getColumn(3).setHeaderValue("Carro 3");
+            jTable1.getColumnModel().getColumn(4).setHeaderValue("Carro 4");
+            jTable1.getColumnModel().getColumn(5).setHeaderValue("Carro 5");
+            jTable1.getColumnModel().getColumn(6).setHeaderValue("Carro 6");
+            jTable1.getColumnModel().getColumn(7).setHeaderValue("Carro 7");
+            jTable1.getColumnModel().getColumn(8).setHeaderValue("Carro 8");
+            jTable1.getColumnModel().getColumn(9).setHeaderValue("Carro 9");
+            jTable1.getColumnModel().getColumn(10).setHeaderValue("Carro 10");
+            jTable1.getColumnModel().getColumn(11).setHeaderValue("Carro 11");
+            jTable1.getColumnModel().getColumn(12).setHeaderValue("Carro 12");
+            jTable1.getColumnModel().getColumn(13).setHeaderValue("Carro 13");
+            jTable1.getColumnModel().getColumn(14).setHeaderValue("Carro 14");
+            jTable1.getColumnModel().getColumn(15).setHeaderValue("Carro 15");
+            jTable1.getColumnModel().getColumn(16).setHeaderValue("Carro 16");
+            jTable1.getColumnModel().getColumn(17).setHeaderValue("Carro 17");
+            jTable1.getColumnModel().getColumn(18).setHeaderValue("Carro 18");
+            jTable1.getColumnModel().getColumn(19).setHeaderValue("Carro 19");
+            jTable1.getColumnModel().getColumn(20).setHeaderValue("Carro 20");
+        }
 
         tituloCorrida.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         tituloCorrida.setForeground(new java.awt.Color(255, 255, 255));
@@ -139,13 +156,13 @@ public class Principal extends javax.swing.JFrame {
         jLabel1.setText("Velocidade da Simulação:");
 
         spinnerVelocidade.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        spinnerVelocidade.setModel(new javax.swing.SpinnerNumberModel(1, 1, null, 1));
 
         jLabel2.setFont(new java.awt.Font("Sylfaen", 1, 48)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Simulador de Fórmula 1");
 
         jDesktopPane1.setLayer(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        jDesktopPane1.setLayer(jButton1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(tituloCorrida, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabelEstadoPista, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
@@ -161,38 +178,34 @@ public class Principal extends javax.swing.JFrame {
                     .addGroup(jDesktopPane1Layout.createSequentialGroup()
                         .addGap(640, 640, 640)
                         .addComponent(jLabel2))
-                    .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                            .addGap(21, 21, 21)
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(spinnerVelocidade, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jDesktopPane1Layout.createSequentialGroup()
-                            .addGap(42, 42, 42)
-                            .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 1725, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDesktopPane1Layout.createSequentialGroup()
-                                    .addComponent(tituloCorrida, javax.swing.GroupLayout.PREFERRED_SIZE, 651, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jDesktopPane1Layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(spinnerVelocidade, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jDesktopPane1Layout.createSequentialGroup()
+                                    .addComponent(tituloCorrida, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabelEstadoPista))))))
-                .addGap(34, 53, Short.MAX_VALUE))
+                                    .addComponent(jLabelEstadoPista))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1773, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
         jDesktopPane1Layout.setVerticalGroup(
             jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jDesktopPane1Layout.createSequentialGroup()
                 .addGap(55, 55, 55)
                 .addComponent(jLabel2)
-                .addGap(79, 79, 79)
+                .addGap(33, 33, 33)
                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelEstadoPista)
                     .addComponent(tituloCorrida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(19, 19, 19)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(476, 476, 476)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(581, 581, 581)
                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(spinnerVelocidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(203, 203, 203))
@@ -217,10 +230,6 @@ public class Principal extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -412,20 +421,16 @@ public class Principal extends javax.swing.JFrame {
                 carro.setCombustivel(100.0f);
             }
 
-            ClassificacaoCorrida classific = new ClassificacaoCorrida(classificacao, p.c.getEquipes(), corrida);
-            classific.setVisible(true);
-            TimeUnit.SECONDS.sleep(10);
-            classific.setVisible(false);
+            ClassificacaoCorrida classific = new ClassificacaoCorrida(p, true, classificacao, p.c.getEquipes(), corrida);
+           
             classificacao = new ArrayList<>();
             cont = 0;
         }
 //            TODO: Exibir tela de pontuação da corida
 //            TimeUnit.SECONDS.sleep(8 + Delays.TROCA_CORRIDA.getV());
 
-        ClassificacaoCampeonato classificCamp = new ClassificacaoCampeonato(p.c.getEquipes());
-        classificCamp.setVisible(true);
-        TimeUnit.SECONDS.sleep(10);
-        classificCamp.setVisible(false);
+        ClassificacaoCampeonato classificCamp = new ClassificacaoCampeonato(p, true, p.c.getEquipes());
+
     }
 
     private static void alteraJLabel2(String str, javax.swing.JLabel label) {
@@ -439,9 +444,12 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel getLable() {
         return this.jLabelEstadoPista;
     }
+    
+    private static void alteraAviso(String str, javax.swing.JLabel label) {
+        label.setText("Fim de Campeonato");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
