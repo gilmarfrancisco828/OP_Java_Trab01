@@ -49,6 +49,7 @@ public class Principal extends javax.swing.JFrame {
         initComponents();
         c = Controlador_Campeonato.criarCampeonato("Grande Prêmio das Lolis");
         Controlador_Campeonato.iniciaCampeonato(c);
+        jLabelAviso.setVisible(false);
         jTable1.getTableHeader().setReorderingAllowed(false);
         jTable1.getModel().addTableModelListener(new TableModelListener() {
             public void tableChanged(TableModelEvent e) {
@@ -95,6 +96,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         spinnerVelocidade = new javax.swing.JSpinner();
         jLabel2 = new javax.swing.JLabel();
+        jLabelAviso = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -153,6 +155,7 @@ public class Principal extends javax.swing.JFrame {
         jLabelEstadoPista.setText("Tempo: Ensolarado");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Velocidade da Simulação:");
 
         spinnerVelocidade.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
@@ -162,12 +165,17 @@ public class Principal extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Simulador de Fórmula 1");
 
+        jLabelAviso.setFont(new java.awt.Font("Sylfaen", 1, 70)); // NOI18N
+        jLabelAviso.setForeground(new java.awt.Color(255, 0, 51));
+        jLabelAviso.setText("Fim do Campeonato!");
+
         jDesktopPane1.setLayer(jScrollPane1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(tituloCorrida, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabelEstadoPista, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(spinnerVelocidade, javax.swing.JLayeredPane.DEFAULT_LAYER);
         jDesktopPane1.setLayer(jLabel2, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        jDesktopPane1.setLayer(jLabelAviso, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
         jDesktopPane1.setLayout(jDesktopPane1Layout);
@@ -190,7 +198,10 @@ public class Principal extends javax.swing.JFrame {
                                     .addComponent(tituloCorrida, javax.swing.GroupLayout.PREFERRED_SIZE, 642, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(jLabelEstadoPista))
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1773, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 1773, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jDesktopPane1Layout.createSequentialGroup()
+                        .addGap(599, 599, 599)
+                        .addComponent(jLabelAviso)))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
         jDesktopPane1Layout.setVerticalGroup(
@@ -204,11 +215,13 @@ public class Principal extends javax.swing.JFrame {
                     .addComponent(tituloCorrida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(19, 19, 19)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(581, 581, 581)
+                .addGap(194, 194, 194)
+                .addComponent(jLabelAviso)
+                .addGap(277, 277, 277)
                 .addGroup(jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(spinnerVelocidade, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(203, 203, 203))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -223,9 +236,8 @@ public class Principal extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 932, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jDesktopPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 926, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -428,9 +440,10 @@ public class Principal extends javax.swing.JFrame {
         }
 //            TODO: Exibir tela de pontuação da corida
 //            TimeUnit.SECONDS.sleep(8 + Delays.TROCA_CORRIDA.getV());
-
+        TimeUnit.SECONDS.sleep(1);
         ClassificacaoCampeonato classificCamp = new ClassificacaoCampeonato(p, true, p.c.getEquipes());
-
+        p.jLabelAviso.setVisible(true);
+        
     }
 
     private static void alteraJLabel2(String str, javax.swing.JLabel label) {
@@ -444,15 +457,12 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JLabel getLable() {
         return this.jLabelEstadoPista;
     }
-    
-    private static void alteraAviso(String str, javax.swing.JLabel label) {
-        label.setText("Fim de Campeonato");
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane jDesktopPane1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabelAviso;
     private javax.swing.JLabel jLabelEstadoPista;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
